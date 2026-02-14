@@ -1,0 +1,141 @@
+/* Container Protection */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 1.5rem;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  backdrop-filter: blur(var(--glass-blur));
+  gap: 1rem; /* Prevents elements from touching */
+  box-sizing: border-box;
+}
+
+/* Section 1: Branding */
+.nav-section-left {
+  flex-shrink: 0; /* Never gets smaller */
+  min-width: 120px;
+}
+
+.nav-logo-text {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* Section 2: Flexible Search */
+.nav-section-center {
+  flex: 1; /* Takes up all available middle space */
+  display: flex;
+  justify-content: center;
+  max-width: 500px;
+}
+
+.search-pill {
+  display: flex;
+  align-items: center;
+  background: var(--input-fill);
+  border-radius: 50px; /* Classic pill shape */
+  padding: 0 12px;
+  width: 100%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.search-pill:focus-within {
+  background: transparent;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.search-pill input {
+  background: transparent;
+  border: none;
+  padding: 10px;
+  color: var(--text-main);
+  width: 100%;
+  outline: none;
+}
+
+/* Section 3: Actions */
+.nav-section-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0; /* Ensures buttons don't wrap to next line */
+}
+
+/* Hover Effects */
+.premium-btn-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.premium-btn-primary:hover {
+  transform: translateY(-2px);
+  background: var(--primary-hover);
+}
+
+.premium-btn-icon {
+  background: transparent;
+  border: 1px solid var(--nav-border);
+  color: var(--text-main);
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.premium-btn-icon:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.premium-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--input-fill);
+  padding: 4px 12px 4px 4px;
+  border-radius: 50px;
+}
+
+.premium-avatar {
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- RESPONSIVE FIXES (Critical for Layout) --- */
+@media (max-width: 900px) {
+  .nav-section-center {
+    display: none; /* Safely removes search when space is low */
+  }
+}
+
+@media (max-width: 600px) {
+  .hide-mobile {
+    display: none; /* Turns "Add Book" into just a "+" button */
+  }
+  .hide-tablet {
+    display: none; /* Removes "Admin" text */
+  }
+  .navbar {
+    padding: 0 0.75rem;
+  }
+}

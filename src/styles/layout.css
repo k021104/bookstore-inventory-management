@@ -1,0 +1,40 @@
+/* src/styles/layout.css */
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main-content {
+    flex: 1;
+    /* This value must match your Sidebar width [cite: 2026-01-27] */
+    margin-left: 292px;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease;
+    /* Smooth shift when sidebar collapses [cite: 2026-01-27] */
+}
+
+/* Update Navbar in Navbar.css or here to handle the shift */
+.navbar {
+    /* Ensure it stays at the top of the content area, not the whole screen */
+    width: 100%;
+}
+
+.page-container {
+    padding: 27px;
+}
+
+/* RESPONSIVE: When Sidebar collapses to 80px (Tablet) */
+@media (max-width: 1024px) {
+    .main-content {
+        margin-left: 112px;
+    }
+}
+
+/* RESPONSIVE: When Sidebar is hidden (Mobile) */
+@media (max-width: 600px) {
+    .main-content {
+        margin-left: 0;
+    }
+}

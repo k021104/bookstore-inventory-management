@@ -153,7 +153,7 @@
 
 
 import React, { useEffect, useState } from 'react'
-import { Book, Users, AlertTriangle, Activity, Clock, ArrowRight, User } from "lucide-react";
+import { Book, Users, AlertTriangle, Activity, Clock, ArrowRight } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid, PieChart, Pie } from "recharts";
 import '../styles/Dashboard.css';
 

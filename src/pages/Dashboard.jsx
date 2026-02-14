@@ -1,90 +1,150 @@
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from "recharts";
-import { Book, Layers, AlertTriangle, Sparkles, Clock } from "lucide-react"; // Matching Navbar/Sidebar style
+import React, { useEffect, useState } from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from "recharts";
+import { Book, Users, AlertTriangle, Calendar, Clock, ShoppingCart, Activity, ArrowRight } from "lucide-react";
 import '../styles/Dashboard.css';
 
 export default function Dashboard() {
-  const stats = [
-    { title: "Total Books", value: 248, icon: <Book size={20} />, color: "var(--primary)" },
-    { title: "Categories", value: 12, icon: <Layers size={20} />, color: "#8b5cf6" },
-    { title: "Low Stock", value: 5, icon: <AlertTriangle size={20} />, color: "#ef4444" },
-    { title: "New Arrivals", value: 18, icon: <Sparkles size={20} />, color: "#10b981" },
-  ];
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    fetch("https://openlibrary.org/subjects/fantasy.json")
+      .then(res => res.json())
+      .then(data => {
+        setBooks(data.works.slice(0, 15));
+        setLoading(false);
+      })
+      .catch(err => console.error("Error:", err));
+  }, []);
+
+  // Calculations for KPIs
+  const totalBooks = books.length;
+  const authors = new Set(books.flatMap(b => b.authors?.map(a => a.name))).size;
+  const lowStockCount = books.filter(b => b.edition_count < 10).length;
+  const latestYear = books.length > 0 ? Math.max(...books.map(b => b.first_publish_year || 0)) : 0;
+
+  // Chart Data - Ensure unique keys for rendering
   const chartData = [
-    { name: "Fiction", books: 40 },
-    { name: "Science", books: 28 },
-    { name: "Business", books: 35 },
-    { name: "History", books: 22 },
+    { name: "High Stock", value: books.filter(b => b.edition_count > 15).length },
+    { name: "Medium", value: books.filter(b => b.edition_count >= 10 && b.edition_count <= 15).length },
+    { name: "Low Stock", value: books.filter(b => b.edition_count < 10).length }
   ];
 
-  const recentBooks = [
-    { title: "Atomic Habits", author: "James Clear", date: "2 hours ago" },
-    { title: "Deep Work", author: "Cal Newport", date: "5 hours ago" },
-    { title: "Think Again", author: "Adam Grant", date: "Yesterday" },
-  ];
+  if (loading) return <div className="loading-state"><span>SYNCING ASSETS...</span></div>;
 
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1>Overview</h1>
-        <p>Welcome back, Admin. Here is what's happening today.</p>
+        <h2>📚 Bookstore Inventory Dashboard</h2>
+        <p>Real-time analytics for your Fantasy collection.</p>
       </header>
 
-      {/* KPI CARDS */}
-      <div className="stat-grid">
-        {stats.map((item, index) => (
-          <div className="stat-card" key={index}>
-            <div className="stat-icon" style={{ backgroundColor: `${item.color}15`, color: item.color }}>
-              {item.icon}
-            </div>
-            <div className="stat-info">
-              <h4>{item.title}</h4>
-              <h2>{item.value}</h2>
-            </div>
-          </div>
-        ))}
+      {/* ROW 1: KPI 2x2 GRID */}
+      <div className="kpi-grid">
+        <div className="kpi-card glass">
+          <div className="kpi-icon blue"><Book /></div>
+          <div className="kpi-content"><span>Total Books</span><h3>{totalBooks}</h3></div>
+        </div>
+        <div className="kpi-card glass">
+          <div className="kpi-icon purple"><Users /></div>
+          <div className="kpi-content"><span>Authors</span><h3>{authors}</h3></div>
+        </div>
+        <div className="kpi-card glass">
+          <div className="kpi-icon red"><AlertTriangle /></div>
+          <div className="kpi-content"><span>Low Stock</span><h3>{lowStockCount}</h3></div>
+        </div>
+        <div className="kpi-card glass">
+          <div className="kpi-icon green"><Calendar /></div>
+          <div className="kpi-content"><span>Latest Year</span><h3>{latestYear}</h3></div>
+        </div>
       </div>
 
-      <div className="dashboard-content-grid">
-        {/* CHART SECTION */}
-        <div className="chart-wrapper premium-card">
-          <div className="card-header">
-            <h3>Books by Category</h3>
-          </div>
+      {/* ROW 2: CATEGORY CHART (Fix: Ensure all bars show) */}
+      <div className="dashboard-row glass">
+        <div className="row-head"><Activity size={18}/> <h3>Stock Level Distribution</h3></div>
+        <div className="chart-wrapper">
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+            <BarChart data={chartData} margin={{ top: 10, right: 30, left: -10, bottom: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--nav-border)" />
               <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: 'var(--text-muted)', fontSize: 12}} />
               <YAxis axisLine={false} tickLine={false} tick={{fill: 'var(--text-muted)', fontSize: 12}} />
-              <Tooltip 
-                cursor={{fill: 'var(--input-fill)'}}
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: 'var(--shadow-md)', background: 'var(--nav-bg)' }}
-              />
-              <Bar dataKey="books" radius={[6, 6, 0, 0]} barSize={40}>
+              <Tooltip cursor={{fill: 'var(--input-fill)'}} contentStyle={{borderRadius: '12px', border: 'none', background: 'var(--nav-bg)', boxShadow: 'var(--shadow-lg)'}} />
+              <Bar dataKey="value" radius={[8, 8, 0, 0]} barSize={50}>
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={index % 2 === 0 ? 'var(--primary)' : 'var(--primary-hover)'} />
+                  <Cell key={`cell-${index}`} fill={index === 2 ? '#ef4444' : index === 1 ? '#8b5cf6' : '#3b82f6'} />
                 ))}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
+      </div>
 
-        {/* RECENT ACTIVITY SECTION */}
-        <div className="recent-books premium-card">
-          <div className="card-header">
-            <h3>Recently Added</h3>
-          </div>
-          <div className="book-list">
-            {recentBooks.map((book, index) => (
-              <div className="book-item" key={index}>
-                <div className="book-icon"><Clock size={16} /></div>
-                <div className="book-details">
-                  <span className="book-title">{book.title}</span>
-                  <span className="book-author">{book.author}</span>
-                </div>
-                <span className="book-time">{book.date}</span>
+      {/* ROW 3: INVENTORY TABLE */}
+      <div className="dashboard-row glass">
+        <div className="row-head"><h3>Inventory Snapshot</h3></div>
+        <div className="table-wrapper">
+          <table className="premium-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Author</th>
+                <th>Year</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {books.map((book, i) => (
+                <tr key={i} className="table-row-hover">
+                  <td className="book-cell">
+                    <img src={`https://covers.openlibrary.org/b/id/${book.cover_id}-S.jpg`} alt="" />
+                    <span>{book.title}</span>
+                  </td>
+                  <td>{book.authors?.[0]?.name}</td>
+                  <td>{book.first_publish_year}</td>
+                  <td>
+                    <span className={`status-pill ${book.edition_count < 10 ? 'red' : 'green'}`}>
+                      {book.edition_count < 10 ? 'Low' : 'Secure'}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* ROW 4: ENHANCED RECENT ACTIVITY */}
+      <div className="dashboard-row glass">
+        <div className="row-head"><Clock size={18}/> <h3>Recent Activity Log</h3></div>
+        <div className="activity-grid">
+          {books.slice(0, 4).map((b, i) => (
+            <div className="activity-card" key={i}>
+              <div className="activity-meta">
+                <span className="log-time">{i + 1}h ago</span>
+                <p>New catalog entry: <strong>{b.title}</strong></p>
+                <span className="log-detail">Published by {b.authors?.[0]?.name} in {b.first_publish_year}</span>
               </div>
-            ))}
-          </div>
+              <ArrowRight size={16} className="activity-arrow" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ROW 5: CRITICAL LOW STOCK (Purchase Required) */}
+      <div className="dashboard-row glass critical-zone">
+        <div className="row-head red-text"><ShoppingCart size={18}/> <h3>Critical Low Stock - Restock Immediately</h3></div>
+        <div className="critical-purchase-list">
+          {books.filter(b => b.edition_count < 10).map((b, i) => (
+            <div className="critical-book-card" key={i}>
+              <img src={`https://covers.openlibrary.org/b/id/${b.cover_id}-S.jpg`} alt="" />
+              <div className="critical-meta">
+                <h4>{b.title}</h4>
+                <p>Author: {b.authors?.[0]?.name}</p>
+                <span className="count-warning">{b.edition_count} copies remaining</span>
+              </div>
+              <button className="purchase-btn">Purchase Now</button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

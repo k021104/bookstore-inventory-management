@@ -1,121 +1,100 @@
-import { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Search, Filter, MoreVertical, BookOpen, Download, Plus, Star } from "lucide-react";
+import '../styles/Books.css';
 
 export default function Books() {
-
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [category, setCategory] = useState("");
-
   const [books, setBooks] = useState([]);
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("");
-  const [editId, setEditId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  // Load from localStorage
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("books")) || [];
-    setBooks(saved);
+    fetch("https://openlibrary.org/subjects/fantasy.json")
+      .then(res => res.json())
+      .then(data => {
+        setBooks(data.works);
+        setLoading(false);
+      });
   }, []);
 
-  // Save to localStorage
-  useEffect(() => {
-    localStorage.setItem("books", JSON.stringify(books));
-  }, [books]);
+  const filteredBooks = books.filter(book =>
+    book.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const addBook = () => {
-    if (!title || !author || !quantity || !category) return alert("Fill all fields");
-
-    if (editId) {
-      setBooks(books.map(b => b.id === editId ? { ...b, title, author, quantity: Number(quantity), category } : b));
-      setEditId(null);
-    } else {
-      setBooks([...books, {
-        id: Date.now(),
-        title,
-        author,
-        quantity: Number(quantity),
-        category
-      }]);
-
-      setTitle("");
-      setAuthor("");
-      setQuantity("");
-      setCategory("");
-    };
-  };
-
-  const deleteBook = (id) => {
-    setBooks(books.filter(book => book.id !== id));
-  };
-
-  const editBook = (book) => {
-    setTitle(book.title);
-    setAuthor(book.author);
-    setQuantity(book.quantity);
-    setCategory(book.category);
-    setEditId(book.id);
-  };
-
-  const filteredBooks = books
-    .filter(b => b.title.toLowerCase().includes(search.toLocaleLowerCase()))
-    .filter(b => filter ? b.category === filter : true);
-
-  const categories = [...new Set(books.map(b => b.category))];
+  if (loading) return <div className="books-loader"><span>ACCESSING ARCHIVES...</span></div>;
 
   return (
-    <div>
-
-      <h2>Books Management</h2>
-
-      {/* Add Book Form */}
-      <input
-        placeholder="Book Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-
-      <input
-        placeholder="Author"
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
-      />
-
-      <input
-        placeholder="Quantity"
-        type="number"
-        value={quantity}
-        onChange={(e) => setQuantity(e.target.value)}
-      />
-
-      <input
-        placeholder="Category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-
-      <button onClick={addBook}>{editId ? "Update Book" : "Add Book"}</button>
-
-      <hr />
-
-      <input placeholder="Search title..." value={search} onChange={e => setSearch(e.target.value)} />
-
-      <select onChange={e => setFilter(e.target.value)}>
-        <option value="">All Categories</option>
-        {categories.map(c => <option key={c}>{c}</option>)}
-      </select>
-
-      <hr />
-
-      {/* Book List */}
-      {filteredBooks.map(book => (
-        <div key={book.id} style={{ border: "1px solid gray", padding: "10px", margin: "5px" }}>
-          <b>{book.title}</b> - {book.author} | Qty: {book.quantity} | {book.category}
-          <button onClick={() => editBook(book)} style={{ marginLeft: 10 }}>Edit</button>
-          <button onClick={() => deleteBook(book.id)} style={{ marginLeft: 5 }}>Delete</button>
+    <div className="books-page">
+      {/* HEADER SECTION */}
+      <header className="books-header">
+        <div className="header-left">
+          <h1>Library Catalog</h1>
+          <p>Managing {books.length} active titles in Fantasy</p>
         </div>
-      ))}
+        <div className="header-actions">
+          <button className="action-btn secondary"><Download size={18} /> Export</button>
+          <button className="action-btn primary"><Plus size={18} /> Add New Book</button>
+        </div>
+      </header>
 
+      {/* FILTER BAR */}
+      <div className="filter-bar glass">
+        <div className="search-wrapper">
+          <Search size={18} className="search-icon" />
+          <input 
+            type="text" 
+            placeholder="Search by title, author, or ISBN..." 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="filter-group">
+          <button className="filter-pill active">All</button>
+          <button className="filter-pill">Available</button>
+          <button className="filter-pill">Low Stock</button>
+          <div className="divider"></div>
+          <button className="icon-pill"><Filter size={18} /></button>
+        </div>
+      </div>
+
+      {/* BOOKS GRID */}
+      <div className="books-grid">
+        {filteredBooks.map((book, i) => (
+          <div className="book-card glass" key={i}>
+            <div className="card-image">
+              {book.cover_id ? (
+                <img src={`https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`} alt={book.title} />
+              ) : (
+                <div className="no-cover"><BookOpen size={40} /></div>
+              )}
+              <div className="card-badge">{book.first_publish_year}</div>
+            </div>
+            
+            <div className="card-content">
+              <div className="card-top">
+                <h3>{book.title}</h3>
+                <button className="more-btn"><MoreVertical size={16} /></button>
+              </div>
+              <p className="author-name">By {book.authors?.[0]?.name || "Unknown Author"}</p>
+              
+              <div className="card-stats">
+                <div className="stat-item">
+                  <span className="stat-label">Editions</span>
+                  <span className="stat-value">{book.edition_count}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Status</span>
+                  <span className={`status-dot ${book.edition_count < 10 ? 'red' : 'green'}`}></span>
+                </div>
+              </div>
+
+              <div className="card-footer">
+                <button className="view-btn">View Details</button>
+                <button className="fav-btn"><Star size={16} /></button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

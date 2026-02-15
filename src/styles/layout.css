@@ -8,7 +8,7 @@
 .main-content {
     flex: 1;
     /* This value must match your Sidebar width [cite: 2026-01-27] */
-    margin-left: 292px;
+    margin-left: 260px;
     display: flex;
     flex-direction: column;
     transition: margin-left 0.3s ease;

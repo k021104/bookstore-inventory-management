@@ -1,19 +1,18 @@
 import { useContext, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import { Search, Plus, Moon, Sun, User } from "lucide-react";
 import '../styles/Navbar.css';
 
-export default function Navbar() {
+// We now accept 'onAddClick' as a property
+export default function Navbar({ onAddClick }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
-  const navigate = useNavigate();
   const [search, setSearch] = useState("");
 
   const pageTitle = {
     "/": "Dashboard",
     "/books": "Library",
-    "/book-form": "Add Book",
     "/categories": "Categories",
     "/logs": "Logs",
     "/settings": "Settings"
@@ -21,12 +20,10 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      {/* SECTION 1: Fixed Width Left */}
       <div className="nav-section-left">
         <h3 className="nav-logo-text">{pageTitle}</h3>
       </div>
 
-      {/* SECTION 2: Flexible Center (Protects the layout) */}
       <div className="nav-section-center">
         <div className="search-pill">
           <Search size={16} className="search-icon" />
@@ -39,9 +36,9 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* SECTION 3: Fixed Width Right */}
       <div className="nav-section-right">
-        <button className="premium-btn-primary" onClick={() => navigate("/book-form")}>
+        {/* MODIFIED: Now triggers the modal prop instead of navigating */}
+        <button className="premium-btn-primary" onClick={onAddClick}>
           <Plus size={18} />
           <span className="hide-mobile">Add Book</span>
         </button>

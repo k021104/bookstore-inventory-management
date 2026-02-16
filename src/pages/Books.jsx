@@ -1,100 +1,161 @@
-import React, { useEffect, useState } from "react";
-import { Search, Filter, MoreVertical, BookOpen, Download, Plus, Star } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Trash2, Edit3, X, Loader2, Package, DollarSign } from 'lucide-react';
 import '../styles/Books.css';
 
-export default function Books() {
+const BooksPage = () => {
   const [books, setBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState('fantasy');
+  const [editingBook, setEditingBook] = useState(null); // This controls the Popup
 
   useEffect(() => {
-    fetch("https://openlibrary.org/subjects/fantasy.json")
-      .then(res => res.json())
-      .then(data => {
-        setBooks(data.works);
+    const loadData = async () => {
+      setLoading(true);
+      const localData = localStorage.getItem(`inventory_${activeCategory}`);
+      if (localData) {
+        setBooks(JSON.parse(localData));
         setLoading(false);
-      });
-  }, []);
+      } else {
+        try {
+          const res = await fetch(`https://openlibrary.org/subjects/${activeCategory}.json?limit=12`);
+          const data = await res.json();
+          const formatted = data.works.map(b => ({
+            id: b.key,
+            title: b.title,
+            author: b.authors?.[0]?.name || "Unknown Author",
+            coverId: b.cover_id,
+            stock: Math.floor(Math.random() * 50) + 1,
+            price: (Math.random() * 30 + 10).toFixed(2),
+          }));
+          setBooks(formatted);
+          localStorage.setItem(`inventory_${activeCategory}`, JSON.stringify(formatted));
+        } finally { setLoading(false); }
+      }
+    };
+    loadData();
+  }, [activeCategory]);
 
-  const filteredBooks = books.filter(book =>
-    book.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const deleteBook = (id) => {
+    if (window.confirm("Remove this book from inventory?")) {
+      const updated = books.filter(b => b.id !== id);
+      setBooks(updated);
+      localStorage.setItem(`inventory_${activeCategory}`, JSON.stringify(updated));
+    }
+  };
 
-  if (loading) return <div className="books-loader"><span>ACCESSING ARCHIVES...</span></div>;
+  const saveEdit = (e) => {
+    e.preventDefault();
+    const updated = books.map(b => b.id === editingBook.id ? editingBook : b);
+    setBooks(updated);
+    localStorage.setItem(`inventory_${activeCategory}`, JSON.stringify(updated));
+    setEditingBook(null); // Close the popup
+  };
 
   return (
-    <div className="books-page">
-      {/* HEADER SECTION */}
-      <header className="books-header">
-        <div className="header-left">
-          <h1>Library Catalog</h1>
-          <p>Managing {books.length} active titles in Fantasy</p>
-        </div>
-        <div className="header-actions">
-          <button className="action-btn secondary"><Download size={18} /> Export</button>
-          <button className="action-btn primary"><Plus size={18} /> Add New Book</button>
-        </div>
-      </header>
-
-      {/* FILTER BAR */}
-      <div className="filter-bar glass">
-        <div className="search-wrapper">
-          <Search size={18} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search by title, author, or ISBN..." 
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        <div className="filter-group">
-          <button className="filter-pill active">All</button>
-          <button className="filter-pill">Available</button>
-          <button className="filter-pill">Low Stock</button>
-          <div className="divider"></div>
-          <button className="icon-pill"><Filter size={18} /></button>
-        </div>
-      </div>
-
-      {/* BOOKS GRID */}
-      <div className="books-grid">
-        {filteredBooks.map((book, i) => (
-          <div className="book-card glass" key={i}>
-            <div className="card-image">
-              {book.cover_id ? (
-                <img src={`https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`} alt={book.title} />
-              ) : (
-                <div className="no-cover"><BookOpen size={40} /></div>
-              )}
-              <div className="card-badge">{book.first_publish_year}</div>
-            </div>
-            
-            <div className="card-content">
-              <div className="card-top">
-                <h3>{book.title}</h3>
-                <button className="more-btn"><MoreVertical size={16} /></button>
-              </div>
-              <p className="author-name">By {book.authors?.[0]?.name || "Unknown Author"}</p>
-              
-              <div className="card-stats">
-                <div className="stat-item">
-                  <span className="stat-label">Editions</span>
-                  <span className="stat-value">{book.edition_count}</span>
-                </div>
-                <div className="stat-item">
-                  <span className="stat-label">Status</span>
-                  <span className={`status-dot ${book.edition_count < 10 ? 'red' : 'green'}`}></span>
-                </div>
-              </div>
-
-              <div className="card-footer">
-                <button className="view-btn">View Details</button>
-                <button className="fav-btn"><Star size={16} /></button>
-              </div>
-            </div>
-          </div>
+    <div className="books-wrapper">
+      <div className="category-header">
+        {['fantasy', 'history', 'science_fiction', 'mystery'].map(cat => (
+          <button 
+            key={cat} 
+            className={`cat-tab ${activeCategory === cat ? 'active' : ''}`}
+            onClick={() => setActiveCategory(cat)}
+          >
+            {cat.replace('_', ' ')}
+          </button>
         ))}
       </div>
+
+      {loading ? <div className="loader"><Loader2 className="spin" /></div> : (
+        <div className="books-grid">
+          {books.map((book) => (
+            <div key={book.id} className="book-card-premium glass">
+              <div className="card-image">
+                <img src={`https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg`} alt="" />
+                <div className="stock-pill" data-status={book.stock < 10 ? 'low' : 'ok'}>
+                  {book.stock < 10 ? 'Low Stock' : 'In Stock'}
+                </div>
+              </div>
+
+              <div className="card-content">
+                <div className="info-header">
+                  <h3 className="book-name">{book.title}</h3>
+                  <p className="author-name">by {book.author}</p>
+                </div>
+
+                <div className="stats-row">
+                  <div className="stat">
+                    <span className="label">Price</span>
+                    <span className="value">${book.price}</span>
+                  </div>
+                  <div className="stat">
+                    <span className="label">Stock</span>
+                    <span className="value">{book.stock} pcs</span>
+                  </div>
+                </div>
+
+                <div className="card-actions">
+                  <button className="btn-edit" onClick={() => setEditingBook(book)}>
+                    <Edit3 size={16} /> Edit
+                  </button>
+                  <button className="btn-delete" onClick={() => deleteBook(book.id)}>
+                    <Trash2 size={16} /> Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* --- PREMIUM EDIT POPUP (MODAL) --- */}
+      {editingBook && (
+        <div className="modal-overlay" onClick={() => setEditingBook(null)}>
+          <div className="modal-box glass" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Edit Inventory</h3>
+              <button className="close-btn" onClick={() => setEditingBook(null)}><X size={20}/></button>
+            </div>
+            
+            <form onSubmit={saveEdit} className="modal-form">
+              <div className="book-preview-small">
+                 <img src={`https://covers.openlibrary.org/b/id/${editingBook.coverId}-S.jpg`} alt="" />
+                 <div>
+                    <h4>{editingBook.title}</h4>
+                    <span>{editingBook.author}</span>
+                 </div>
+              </div>
+
+              <div className="form-grid">
+                <div className="input-field">
+                  <label><DollarSign size={14}/> Price</label>
+                  <input 
+                    type="number" 
+                    step="0.01"
+                    value={editingBook.price} 
+                    onChange={(e) => setEditingBook({...editingBook, price: e.target.value})}
+                    autoFocus
+                  />
+                </div>
+                <div className="input-field">
+                  <label><Package size={14}/> Stock</label>
+                  <input 
+                    type="number" 
+                    value={editingBook.stock} 
+                    onChange={(e) => setEditingBook({...editingBook, stock: parseInt(e.target.value) || 0})}
+                  />
+                </div>
+              </div>
+
+              <div className="modal-actions">
+                <button type="button" className="secondary-btn" onClick={() => setEditingBook(null)}>Discard</button>
+                <button type="submit" className="primary-btn">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default BooksPage;

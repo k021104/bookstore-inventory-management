@@ -1,7 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { Book, Users, AlertTriangle, Activity, Clock, ArrowRight } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid, PieChart, Pie } from "recharts";
+// 1. Import Chart.js essentials
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  ArcElement
+} from 'chart.js';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import '../styles/Dashboard.css';
+
+// 2. Register Chart.js Components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function Dashboard() {
   const [books, setBooks] = useState([]);
@@ -11,13 +33,18 @@ export default function Dashboard() {
     fetch("https://openlibrary.org/subjects/fantasy.json")
       .then((res) => res.json())
       .then((data) => {
-        // We take the first 12 books to keep the dashboard clean
-        setBooks(data.works.slice(0, 12));
+        if (data && data.works) {
+          setBooks(data.works.slice(0, 12));
+        }
         setLoading(false);
       })
-      .catch((err) => console.error("API Error:", err));
+      .catch((err) => {
+        console.error("API Error:", err);
+        setLoading(false);
+      });
   }, []);
 
+  // --- DATA PREPARATION ---
   const getAuthorData = () => {
     const counts = {};
     books.forEach((b) => {
@@ -25,28 +52,41 @@ export default function Dashboard() {
       counts[name] = (counts[name] || 0) + 1;
     });
 
-    return Object.keys(counts)
+    const sorted = Object.keys(counts)
       .map((name) => ({ name, count: counts[name] }))
-      .sort((a, b) => b.count - a.count) // Sort biggest to smallest
-      .slice(0, 5); // Take top 5
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+
+    return {
+      labels: sorted.map(item => item.name),
+      datasets: [{
+        label: 'Books',
+        data: sorted.map(item => item.count),
+        backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'],
+        borderRadius: 6,
+      }]
+    };
   };
 
-  if (loading) return <div style={{ padding: '50px', textAlign: 'center' }}>Syncing Library Data...</div>;
-
-  const authorChartData = getAuthorData();
-
   const getStockDistribution = () => {
-    // Change 10 to 40 to catch more books for the demo
     const low = books.filter(b => b.edition_count < 750).length;
     const healthy = books.length - low;
 
-    return [
-      { name: 'Low Stock', value: low, color: '#ef4444' },
-      { name: 'Healthy', value: healthy, color: '#10b981' }
-    ];
+    return {
+      labels: ['Low Stock', 'Healthy'],
+      datasets: [{
+        data: [low, healthy],
+        backgroundColor: ['#ef4444', '#10b981'],
+        borderWidth: 0,
+        cutout: '75%',
+      }]
+    };
   };
 
-  const stockData = getStockDistribution();
+  if (loading) return <div style={{ padding: '50px', textAlign: 'center', color: 'white' }}>Syncing Library Data...</div>;
+
+  const barData = getAuthorData();
+  const doughnutData = getStockDistribution();
 
   return (
     <div className='dashboard-wrapper'>
@@ -56,7 +96,6 @@ export default function Dashboard() {
       </header>
 
       <div className="stat-row">
-        {/* Card 1: Total Titles */}
         <div className="stat-card glass border-blue">
           <div className="stat-icon blue"><Book /></div>
           <div className="stat-val">
@@ -65,7 +104,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Card 2: Active Authors (Calculated dynamically) */}
         <div className="stat-card glass border-purple">
           <div className="stat-icon purple"><Users /></div>
           <div className="stat-val">
@@ -74,7 +112,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Card 3: Low Stock (Based on edition_count < 10) */}
         <div className="stat-card glass border-red">
           <div className="stat-icon red"><AlertTriangle /></div>
           <div className="stat-val">
@@ -82,7 +119,6 @@ export default function Dashboard() {
             <h3>{books.filter(b => b.edition_count < 10).length}</h3>
           </div>
         </div>
-
       </div>
 
       <div className="content-panel glass">
@@ -91,75 +127,67 @@ export default function Dashboard() {
           <h3>Top Authors Concentration</h3>
         </div>
 
-        <div className="chart-box">
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={authorChartData} margin={{ top: 20, right: 20, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--nav-border)" />
-
-              {/* XAxis is now for Names. interval={0} shows ALL names. angle rotates them. */}
-              <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
-                interval={0}
-                height={30}
-                dy={10}
-              />
-
-              {/* YAxis is now for the Numbers (Counts) */}
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: 'var(--text-muted)', fontSize: 12 }}
-              />
-
-              <Tooltip
-                cursor={{ fill: 'var(--input-fill)', opacity: 0.4 }}
-                contentStyle={{ borderRadius: '12px', border: 'none', background: 'var(--nav-bg)', color: 'var(--text-main)' }}
-              />
-
-              {/* Bars now grow UP. radius affects the top corners only. */}
-              <Bar dataKey="count" radius={[6, 6, 0, 0]} barSize={40}>
-                {authorChartData.map((entry, index) => (
-                  <Cell key={index} fill={['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'][index % 5]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+        {/* SAME CSS CLASS: chart-box */}
+        <div className="chart-box" style={{ height: '300px', width: '100%' }}>
+          <Bar
+            data={barData}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false }
+              },
+              scales: {
+                x: {
+                  grid: { display: false },
+                  ticks: {
+                    color: '#94a3b8',
+                    maxRotation: 0, // नाम को तिरछा होने से रोकता है
+                    minRotation: 0, // नाम को सीधा रखता है
+                    autoSkip: false, // सभी नाम दिखाने की कोशिश करता है
+                    font: {
+                      size: 10 // छोटा फ़ॉन्ट ताकि नाम एक लाइन में आ सकें
+                    },
+                    callback: function (value) {
+                      const label = this.getLabelForValue(value);
+                      if (label.length > 10) {
+                        return label.substr(0, 10) + '...'; // बहुत लंबे नामों को छोटा कर देगा
+                      }
+                      return label;
+                    }
+                  }
+                },
+                y: {
+                  grid: { color: 'rgba(255,255,255,0.05)' },
+                  ticks: { color: '#94a3b8', stepSize: 1 }
+                }
+              }
+            }}
+          />
         </div>
-        
       </div>
 
       <div className="dashboard-grid-2">
-        {/* NEW CHART: STOCK DISTRIBUTION */}
         <div className="content-panel glass">
           <div className="panel-title"><h3>Stock Health</h3></div>
-          <div className="chart-box-small">
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart>
-                <Pie
-                  data={stockData}
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {stockData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+
+          {/* SAME CSS CLASS: chart-box-small */}
+          <div className="chart-box-small" style={{ height: '220px', width: '100%' }}>
+            <Doughnut
+              data={doughnutData}
+              options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
+              }}
+            />
             <div className="chart-label">
-              <strong>{Math.round((stockData[1].value / books.length) * 100)}%</strong>
+              <strong>{books.length > 0 ? Math.round(((books.length - books.filter(b => b.edition_count < 750).length) / books.length) * 100) : 0}%</strong>
               <span>Healthy</span>
             </div>
           </div>
         </div>
 
-        {/* LOW STOCK UPDATOR PANEL */}
         <div className="content-panel glass border-red">
           <div className="panel-title red-text">
             <AlertTriangle size={18} />
@@ -184,17 +212,10 @@ export default function Dashboard() {
           <Clock size={18} />
           <h3>Recent Inventory Activity</h3>
         </div>
-
         <div className="activity-list">
-          {/* We use the real books we fetched earlier */}
           {books.slice(0, 4).map((book, i) => (
             <div className="activity-item-detailed" key={i}>
-              {/* Real book cover from Open Library API */}
-              <img
-                src={`https://covers.openlibrary.org/b/id/${book.cover_id}-S.jpg`}
-                alt={book.title}
-                className="activity-img"
-              />
+              <img src={`https://covers.openlibrary.org/b/id/${book.cover_id}-S.jpg`} alt={book.title} className="activity-img" />
               <div className="activity-info">
                 <p>Inventory update: <strong>{book.title}</strong></p>
                 <span>By {book.authors?.[0]?.name} • Stock Level: {book.edition_count}</span>
@@ -207,10 +228,7 @@ export default function Dashboard() {
       </div>
 
       <div className="content-panel glass">
-        <div className="panel-title">
-          <h3>Inventory Snapshot</h3>
-        </div>
-
+        <div className="panel-title"><h3>Inventory Snapshot</h3></div>
         <div className="table-overflow">
           <table className="pro-table">
             <thead>
@@ -221,14 +239,10 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {/* We use the first 6 books for the table */}
               {books.slice(0, 6).map((book, i) => (
                 <tr key={i}>
                   <td className="table-book-cell">
-                    <img
-                      src={`https://covers.openlibrary.org/b/id/${book.cover_id}-S.jpg`}
-                      alt=""
-                    />
+                    <img src={`https://covers.openlibrary.org/b/id/${book.cover_id}-S.jpg`} alt="" />
                     <div className="table-text">
                       <strong>{book.title}</strong>
                       <span>ID: {book.cover_id}</span>
@@ -236,7 +250,6 @@ export default function Dashboard() {
                   </td>
                   <td>{book.authors?.[0]?.name}</td>
                   <td>
-                    {/* This badge changes color based on the edition_count */}
                     <span className={`status-badge ${book.edition_count < 10 ? 'urgent' : 'stable'}`}>
                       {book.edition_count < 10 ? 'Restock' : 'Stable'}
                     </span>
@@ -247,7 +260,6 @@ export default function Dashboard() {
           </table>
         </div>
       </div>
-
     </div>
-  )
+  );
 }

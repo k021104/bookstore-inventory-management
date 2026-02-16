@@ -6,14 +6,18 @@ import BookForm from "./pages/BookForm";
 import Categories from "./pages/Categories";
 import ActivityLogs from "./pages/ActivityLogs";
 import Settings from "./pages/Settings";
+import { useState } from "react";
+import AddBookModal from "./components/AddBookModal";
 import './App.css';
 
 function App() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <BrowserRouter>
       <Routes>
 
-        <Route element={<Layout />}>
+        <Route element={<Layout onAddClick={() => setIsModalOpen(true)} />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/books" element={<Books />} />
           <Route path="/book-form" element={<BookForm />} />
@@ -23,6 +27,7 @@ function App() {
         </Route>
 
       </Routes>
+      <AddBookModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </BrowserRouter>
   );
 }

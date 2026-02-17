@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books";
-import BookForm from "./pages/BookForm";
 import Categories from "./pages/Categories";
 import ActivityLogs from "./pages/ActivityLogs";
 import Settings from "./pages/Settings";

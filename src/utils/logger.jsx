@@ -1,5 +1,3 @@
-import { type } from "@testing-library/user-event/dist/type";
-
 export const saveLog = (action, details, type = 'info') => {
     const logs = JSON.parse(localStorage.getItem('activity_logs')) || [];
     const newLog = {

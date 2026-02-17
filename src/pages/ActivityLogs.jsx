@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, Trash2, PlusCircle, Edit, AlertCircle, Plus } from 'lucide-react';
+import { Clock, Trash2, PlusCircle, Edit, AlertCircle } from 'lucide-react';
 import '../styles/ActivityLogs.css';
 
 export default function ActivityLogs() {

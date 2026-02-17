@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, BookOpen, User, DollarSign, Package } from 'lucide-react';
+import { X } from 'lucide-react';
 import '../styles/AddBookModal.css';
 import { saveLog } from '../utils/logger';
 
@@ -8,7 +8,7 @@ export default function AddBookModal({ isOpen, onClose }) {
         title: '', author: '', price: '', stock: '', category: 'fantasy', coverId: '12818862'
     });
 
-    if (!isOpen) return null; 
+    if (!isOpen) return null;
 
     const handleSave = (e) => {
         e.preventDefault();

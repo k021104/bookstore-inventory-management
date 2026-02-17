@@ -3,13 +3,16 @@ import Navbar from "../components/Navbar";
 import '../styles/layout.css';
 import { Outlet } from "react-router-dom";
 
-export default function Layout({ onAddClick }) {
+export default function Layout({ onAddClick, searchQuery, setSearchQuery }) {
   return (
     <div className="app-container">
       <Sidebar />
       <div className="main-content">
-        <Navbar onAddClick={onAddClick} />
-         <div className="page-container">
+        <Navbar onAddClick={onAddClick}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
+        <div className="page-container">
           <Outlet />
         </div>
       </div>

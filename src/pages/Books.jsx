@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Trash2, Edit3, X, Loader2, Package, DollarSign } from 'lucide-react';
 import '../styles/Books.css';
+import { useLocation } from 'react-router-dom';
+import { saveLog } from '../utils/logger';
 
-const BooksPage = () => {
+const BooksPage = ({ searchQuery }) => {
+  const location = useLocation();
+
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState('fantasy');
-  const [editingBook, setEditingBook] = useState(null); // This controls the Popup
+  const [editingBook, setEditingBook] = useState(null);
+
+  const filteredBooks = books.filter(book =>
+    book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    book.author.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (location.state?.selectedCategory) {
+      setActiveCategory(location.state.selectedCategory);
+    }
+  }, [location]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -35,28 +50,39 @@ const BooksPage = () => {
     loadData();
   }, [activeCategory]);
 
-  const deleteBook = (id) => {
+  const deleteBook = (id, title) => {
     if (window.confirm("Remove this book from inventory?")) {
       const updated = books.filter(b => b.id !== id);
       setBooks(updated);
       localStorage.setItem(`inventory_${activeCategory}`, JSON.stringify(updated));
+
+      saveLog("Deleted", `Removed "${title} from ${activeCategory}`, "danger");
     }
   };
 
   const saveEdit = (e) => {
     e.preventDefault();
+    const oldBook = books.find(b => b.id === editingBook.id);
+
     const updated = books.map(b => b.id === editingBook.id ? editingBook : b);
     setBooks(updated);
     localStorage.setItem(`inventory_${activeCategory}`, JSON.stringify(updated));
-    setEditingBook(null); // Close the popup
+
+    saveLog(
+      "Updated",
+      `Changed "${editingBook.title}" - Stock: ${oldBook.stock}→${editingBook.stock}, Price: $${oldBook.price}→$${editingBook.price}`,
+      "warning"
+    );
+
+    setEditingBook(null);
   };
 
   return (
     <div className="books-wrapper">
       <div className="category-header">
         {['fantasy', 'history', 'science_fiction', 'mystery'].map(cat => (
-          <button 
-            key={cat} 
+          <button
+            key={cat}
             className={`cat-tab ${activeCategory === cat ? 'active' : ''}`}
             onClick={() => setActiveCategory(cat)}
           >
@@ -67,7 +93,7 @@ const BooksPage = () => {
 
       {loading ? <div className="loader"><Loader2 className="spin" /></div> : (
         <div className="books-grid">
-          {books.map((book) => (
+          {filteredBooks.map((book) => (
             <div key={book.id} className="book-card-premium glass">
               <div className="card-image">
                 <img src={`https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg`} alt="" />
@@ -113,35 +139,35 @@ const BooksPage = () => {
           <div className="modal-box glass" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h3>Edit Inventory</h3>
-              <button className="close-btn" onClick={() => setEditingBook(null)}><X size={20}/></button>
+              <button className="close-btn" onClick={() => setEditingBook(null)}><X size={20} /></button>
             </div>
-            
+
             <form onSubmit={saveEdit} className="modal-form">
               <div className="book-preview-small">
-                 <img src={`https://covers.openlibrary.org/b/id/${editingBook.coverId}-S.jpg`} alt="" />
-                 <div>
-                    <h4>{editingBook.title}</h4>
-                    <span>{editingBook.author}</span>
-                 </div>
+                <img src={`https://covers.openlibrary.org/b/id/${editingBook.coverId}-S.jpg`} alt="" />
+                <div>
+                  <h4>{editingBook.title}</h4>
+                  <span>{editingBook.author}</span>
+                </div>
               </div>
 
               <div className="form-grid">
                 <div className="input-field">
-                  <label><DollarSign size={14}/> Price</label>
-                  <input 
-                    type="number" 
+                  <label><DollarSign size={14} /> Price</label>
+                  <input
+                    type="number"
                     step="0.01"
-                    value={editingBook.price} 
-                    onChange={(e) => setEditingBook({...editingBook, price: e.target.value})}
+                    value={editingBook.price}
+                    onChange={(e) => setEditingBook({ ...editingBook, price: e.target.value })}
                     autoFocus
                   />
                 </div>
                 <div className="input-field">
-                  <label><Package size={14}/> Stock</label>
-                  <input 
-                    type="number" 
-                    value={editingBook.stock} 
-                    onChange={(e) => setEditingBook({...editingBook, stock: parseInt(e.target.value) || 0})}
+                  <label><Package size={14} /> Stock</label>
+                  <input
+                    type="number"
+                    value={editingBook.stock}
+                    onChange={(e) => setEditingBook({ ...editingBook, stock: parseInt(e.target.value) || 0 })}
                   />
                 </div>
               </div>

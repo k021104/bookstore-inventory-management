@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { X, BookOpen, User, DollarSign, Package } from 'lucide-react';
 import '../styles/AddBookModal.css';
+import { saveLog } from '../utils/logger';
 
 export default function AddBookModal({ isOpen, onClose }) {
     const [formData, setFormData] = useState({
         title: '', author: '', price: '', stock: '', category: 'fantasy', coverId: '12818862'
     });
 
-    if (!isOpen) return null; // अगर क्लोज है तो कुछ न दिखाएं
+    if (!isOpen) return null; 
 
     const handleSave = (e) => {
         e.preventDefault();
@@ -15,7 +16,8 @@ export default function AddBookModal({ isOpen, onClose }) {
         const newData = [{ ...formData, id: Date.now() }, ...existingData];
         localStorage.setItem(`inventory_${formData.category}`, JSON.stringify(newData));
         alert("Book Added Successfully!");
-        onClose(); // सेव होने के बाद बंद करें
+        saveLog("Added", `New book "${formData.title}" added to ${formData.category}`, "success");
+        onClose();
     };
 
     return (

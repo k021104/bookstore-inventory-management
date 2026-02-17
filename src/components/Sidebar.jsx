@@ -31,11 +31,6 @@ export default function Sidebar() {
           <span>Books</span>
         </NavLink>
 
-        <NavLink to="/book-form" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
-          <PlusCircle size={20} />
-          <span>Add Book</span>
-        </NavLink>
-
         <NavLink to="/categories" className={({ isActive }) => isActive ? "nav-item active" : "nav-item"}>
           <Tags size={20} />
           <span>Categories</span>

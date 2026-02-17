@@ -1,14 +1,14 @@
 import { useContext, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import { Search, Plus, Moon, Sun, User } from "lucide-react";
 import '../styles/Navbar.css';
 
 // We now accept 'onAddClick' as a property
-export default function Navbar({ onAddClick }) {
+export default function Navbar({ onAddClick, searchQuery, setSearchQuery }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const navigate = useNavigate();
   const location = useLocation();
-  const [search, setSearch] = useState("");
 
   const pageTitle = {
     "/": "Dashboard",
@@ -17,6 +17,15 @@ export default function Navbar({ onAddClick }) {
     "/logs": "Logs",
     "/settings": "Settings"
   }[location.pathname] || "Admin";
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+
+    if (value.length > 0 && location.pathname !== "/books") {
+      navigate("/books");
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -29,9 +38,9 @@ export default function Navbar({ onAddClick }) {
           <Search size={16} className="search-icon" />
           <input
             type="text"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by title or author..."
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
         </div>
       </div>

@@ -1,12 +1,12 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
-import { Search, Plus, Moon, Sun, User } from "lucide-react";
+import { Search, Plus, Moon, Sun, User, LogOut, Settings, ChevronDown } from "lucide-react";
 import '../styles/Navbar.css';
 
-// We now accept 'onAddClick' as a property
 export default function Navbar({ onAddClick, searchQuery, setSearchQuery }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,9 +21,15 @@ export default function Navbar({ onAddClick, searchQuery, setSearchQuery }) {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-
     if (value.length > 0 && location.pathname !== "/books") {
       navigate("/books");
+    }
+  };
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure want to logout?")) {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "/login";
     }
   };
 
@@ -46,7 +52,6 @@ export default function Navbar({ onAddClick, searchQuery, setSearchQuery }) {
       </div>
 
       <div className="nav-section-right">
-        {/* MODIFIED: Now triggers the modal prop instead of navigating */}
         <button className="premium-btn-primary" onClick={onAddClick}>
           <Plus size={18} />
           <span className="hide-mobile">Add Book</span>
@@ -56,12 +61,43 @@ export default function Navbar({ onAddClick, searchQuery, setSearchQuery }) {
           {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
         </button>
 
-        <div className="premium-user-pill">
-          <div className="premium-avatar">
-            <User size={14} />
+        {/* --- PROFESSIONAL DROPDOWN START --- */}
+        <div className="profile-wrapper">
+          <div
+            className={`premium-user-pill ${isDropdownOpen ? 'active' : ''}`}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+          >
+            <div className="premium-avatar">
+              <User size={14} />
+            </div>
+            <span className="hide-tablet">Admin</span>
+            <ChevronDown size={14} className={`chevron-icon ${isDropdownOpen ? 'rotate' : ''}`} />
           </div>
-          <span className="hide-tablet">Admin</span>
+
+          {isDropdownOpen && (
+            <div className="profile-dropdown">
+              <div className="dropdown-header-box">
+                <p className="signed-in-label">Signed in as</p>
+                <p className="user-email-text">admin@bookstore.com</p>
+              </div>
+
+              <div className="dropdown-divider"></div>
+
+              <div className="dropdown-menu-items">
+                <button className="dropdown-item" onClick={() => { navigate('/settings'); setIsDropdownOpen(false); }}>
+                  <Settings size={17} />
+                  <span>Account Settings</span>
+                </button>
+
+                <button className="dropdown-item logout-red" onClick={handleLogout}>
+                  <LogOut size={17} />
+                  <span>Sign Out</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+        {/* --- PROFESSIONAL DROPDOWN END --- */}
       </div>
     </nav>
   );

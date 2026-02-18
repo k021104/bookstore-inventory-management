@@ -1,5 +1,8 @@
 /* Container Protection */
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 99999 !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -8,13 +11,16 @@
   background: var(--nav-bg);
   border-bottom: 1px solid var(--nav-border);
   backdrop-filter: blur(var(--glass-blur));
-  gap: 1rem; /* Prevents elements from touching */
+  gap: 1rem;
+  /* Prevents elements from touching */
   box-sizing: border-box;
+
 }
 
 /* Section 1: Branding */
 .nav-section-left {
-  flex-shrink: 0; /* Never gets smaller */
+  flex-shrink: 0;
+  /* Never gets smaller */
   min-width: 120px;
 }
 
@@ -27,7 +33,8 @@
 
 /* Section 2: Flexible Search */
 .nav-section-center {
-  flex: 1; /* Takes up all available middle space */
+  flex: 1;
+  /* Takes up all available middle space */
   display: flex;
   justify-content: center;
   max-width: 500px;
@@ -37,7 +44,8 @@
   display: flex;
   align-items: center;
   background: var(--input-fill);
-  border-radius: 50px; /* Classic pill shape */
+  border-radius: 50px;
+  /* Classic pill shape */
   padding: 0 12px;
   width: 100%;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -64,7 +72,8 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  flex-shrink: 0; /* Ensures buttons don't wrap to next line */
+  flex-shrink: 0;
+  /* Ensures buttons don't wrap to next line */
 }
 
 /* Hover Effects */
@@ -124,18 +133,203 @@
 /* --- RESPONSIVE FIXES (Critical for Layout) --- */
 @media (max-width: 900px) {
   .nav-section-center {
-    display: none; /* Safely removes search when space is low */
+    display: none;
+    /* Safely removes search when space is low */
   }
 }
 
 @media (max-width: 600px) {
   .hide-mobile {
-    display: none; /* Turns "Add Book" into just a "+" button */
+    display: none;
+    /* Turns "Add Book" into just a "+" button */
   }
+
   .hide-tablet {
-    display: none; /* Removes "Admin" text */
+    display: none;
+    /* Removes "Admin" text */
   }
+
   .navbar {
     padding: 0 0.75rem;
+  }
+}
+
+/* --- Navbar Profile Section Styles --- */
+
+.profile-wrapper {
+  position: relative;
+  z-index: 100000 !important;
+}
+
+.premium-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: var(--input-fill);
+  border: 1px solid var(--nav-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.premium-user-pill:hover,
+.premium-user-pill.active {
+  border-color: var(--primary);
+  background: var(--nav-bg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.premium-avatar {
+  width: 28px;
+  height: 28px;
+  background: var(--primary);
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chevron-icon {
+  transition: transform 0.3s ease;
+  color: var(--text-muted);
+}
+
+.chevron-icon.rotate {
+  transform: rotate(180deg);
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 280px !important;
+  min-width: 280px !important;
+
+  /* 1. विजुअल फिक्स: इसे पूरी तरह से सॉलिड (ठोस) बनाएं */
+  background-color: #ffffff !important;
+  /* लाइट मोड के लिए पक्का सफेद */
+  background-image: none !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  /* 2. लेयरिंग फिक्स: सबसे ऊपर दिखने के लिए */
+  z-index: 999999 !important;
+
+  border: 1px solid var(--nav-border);
+  border-radius: 16px;
+  padding: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex !important;
+  flex-direction: column;
+}
+
+[data-theme='dark'] .profile-dropdown {
+  background-color: #1a1a1a !important;
+  border-color: #333 !important;
+}
+
+.user-email-text {
+  color: var(--text-main) !important;
+  font-weight: 700;
+}
+
+.light .profile-dropdown {
+  background-color: #ffffff !important;
+}
+
+.dark .profile-dropdown {
+  background-color: #1a1c1e !important;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 4. Dropdown Header (Email Section) */
+.dropdown-header-box {
+  padding: 12px;
+  text-align: left;
+}
+
+.signed-in-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.user-email-text {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* 5. Divider Line */
+.dropdown-divider {
+  height: 1px;
+  background: var(--nav-border);
+  margin: 6px 0;
+  opacity: 0.5;
+}
+
+/* 6. Menu Items Box */
+.dropdown-menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dropdown-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-main);
+  font-size: 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background: var(--input-fill);
+  color: var(--primary);
+  transform: translateX(5px);
+}
+
+/* Logout Button Special Styling */
+.logout-red {
+  color: #ef4444 !important;
+  /* Red Color */
+}
+
+.logout-red:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Mobile Compatibility */
+@media (max-width: 768px) {
+  .profile-dropdown {
+    width: 250px;
+    right: -10px;
   }
 }

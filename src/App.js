@@ -8,6 +8,8 @@ import Settings from "./pages/Settings";
 import { useState } from "react";
 import AddBookModal from "./components/AddBookModal";
 import './App.css';
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './pages/Login';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,15 +18,18 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<Login />} />
 
-        <Route element={
-          <Layout
-            onAddClick={() => setIsModalOpen(true)}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
+        <Route path="/" element={
+          <ProtectedRoute>
+            <Layout
+              onAddClick={() => setIsModalOpen(true)}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+            />
+          </ProtectedRoute>
         }>
-          <Route path="/" element={<Dashboard />} />
+          <Route index element={<Dashboard />} />
           <Route path="/books" element={<Books searchQuery={searchQuery} />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/logs" element={<ActivityLogs />} />

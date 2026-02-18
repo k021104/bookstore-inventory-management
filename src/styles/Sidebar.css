@@ -34,8 +34,8 @@
 }
 
 .sidebar-header h2 {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
   color: var(--text-main);
   margin: 0;
   letter-spacing: -0.5px;

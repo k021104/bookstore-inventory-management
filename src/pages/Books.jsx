@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Trash2, Edit3, X, Loader2, Package, DollarSign } from 'lucide-react';
 import '../styles/Books.css';
 import { useLocation } from 'react-router-dom';
 import { saveLog } from '../utils/logger';
+import { CurrencyContext } from '../context/CurrencyContext';
 
 const BooksPage = ({ searchQuery }) => {
+  const { currency } = useContext(CurrencyContext);
+  const threshold = parseInt(localStorage.getItem('low_stock_limit')) || 10;
   const location = useLocation();
 
   const [books, setBooks] = useState([]);
@@ -97,8 +100,8 @@ const BooksPage = ({ searchQuery }) => {
             <div key={book.id} className="book-card-premium glass">
               <div className="card-image">
                 <img src={`https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg`} alt="" />
-                <div className="stock-pill" data-status={book.stock < 10 ? 'low' : 'ok'}>
-                  {book.stock < 10 ? 'Low Stock' : 'In Stock'}
+                <div className="stock-pill" data-status={book.stock < threshold ? 'low' : 'ok'}>
+                  {book.stock < threshold ? 'Low Stock' : 'In Stock'}
                 </div>
               </div>
 
@@ -111,7 +114,7 @@ const BooksPage = ({ searchQuery }) => {
                 <div className="stats-row">
                   <div className="stat">
                     <span className="label">Price</span>
-                    <span className="value">${book.price}</span>
+                    <span className="value">{currency}{book.price}</span>
                   </div>
                   <div className="stat">
                     <span className="label">Stock</span>

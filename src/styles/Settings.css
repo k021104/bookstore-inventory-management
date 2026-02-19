@@ -191,3 +191,39 @@
         transform: translateY(0);
     }
 }
+
+.password-placeholder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.password-edit-form {
+    padding-top: 10px;
+}
+
+.form-actions-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-cancel-text {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-cancel-text:hover {
+    color: var(--text-main);
+    text-decoration: underline;
+}
+
+.st-save-btn.small {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+}

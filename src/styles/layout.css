@@ -1,5 +1,3 @@
-/* src/styles/layout.css */
-
 .app-container {
     display: flex;
     min-height: 100vh;
@@ -7,34 +5,51 @@
 
 .main-content {
     flex: 1;
-    /* This value must match your Sidebar width [cite: 2026-01-27] */
-    margin-left: 260px;
+    margin-left: 280px;
     display: flex;
     flex-direction: column;
-    transition: margin-left 0.3s ease;
-    /* Smooth shift when sidebar collapses [cite: 2026-01-27] */
-}
-
-/* Update Navbar in Navbar.css or here to handle the shift */
-.navbar {
-    /* Ensure it stays at the top of the content area, not the whole screen */
-    width: 100%;
+    min-width: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .page-container {
-    /* padding: 27px; */
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* RESPONSIVE: When Sidebar collapses to 80px (Tablet) */
-@media (max-width: 1024px) {
+@media (max-width: 850px) {
     .main-content {
-        margin-left: 112px;
+        margin-left: 80px;
     }
 }
 
-/* RESPONSIVE: When Sidebar is hidden (Mobile) */
 @media (max-width: 600px) {
     .main-content {
         margin-left: 0;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 1001;
+    }
+
+    .page-container {
+        padding: 10px;
+    }
+}
+
+@media (min-width: 851px) and (max-width: 1024px) {
+    .main-content {
+        margin-left: 230px !important;
+        width: calc(100% - 230px);
+        transition: margin-left 0.3s ease;
+    }
+
+    .navbar {
+        width: 100%;
     }
 }

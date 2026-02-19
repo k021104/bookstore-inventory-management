@@ -2,7 +2,7 @@
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 99999 !important;
+  z-index: 999 !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -20,8 +20,10 @@
 /* Section 1: Branding */
 .nav-section-left {
   flex-shrink: 0;
-  /* Never gets smaller */
   min-width: 120px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .nav-logo-text {
@@ -331,5 +333,102 @@
   .profile-dropdown {
     width: 250px;
     right: -10px;
+  }
+}
+
+/* --- RESPONSIVE FIXES START --- */
+
+/* 1. For Tablets (900px and below) */
+@media (max-width: 900px) {
+  .nav-section-center {
+    display: none;
+    /* Hide search bar to save space */
+  }
+
+  .navbar {
+    padding: 0 1rem;
+  }
+}
+
+/* 2. For Mobile Screens (600px and below) */
+@media (max-width: 600px) {
+  .hide-mobile {
+    display: none;
+    /* Hide "Add Book" text, only show Plus icon */
+  }
+
+  .premium-btn-primary {
+    padding: 8px 10px;
+    /* Slim down button */
+  }
+
+  .nav-logo-text {
+    font-size: 0.95rem;
+    /* Smaller title */
+  }
+
+  .premium-user-pill {
+    padding: 4px 8px;
+    /* Compact profile pill */
+  }
+
+  .hide-tablet {
+    display: none;
+    /* Hide "Admin" text */
+  }
+
+  /* Dropdown adjustments for small screens */
+  .profile-dropdown {
+    width: 240px !important;
+    min-width: 240px !important;
+    right: -10px;
+    /* Avoid overflow */
+  }
+}
+
+/* 3. Small Mobile Fix (400px and below) */
+@media (max-width: 400px) {
+  .nav-section-right {
+    gap: 0.4rem;
+    /* Reduce gap between icons */
+  }
+
+  .premium-btn-icon {
+    padding: 6px;
+    /* Smaller theme toggle */
+  }
+}
+
+/* 4. Layout Protection */
+.navbar {
+  box-sizing: border-box;
+  /* Ensures padding doesn't break width */
+  width: 100%;
+}
+
+/* Ensuring dropdown doesn't get cut off */
+.profile-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.hamburger-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  cursor: pointer;
+  padding: 0;
+  margin-right: 12px;
+}
+
+@media (max-width: 600px) {
+  .hamburger-btn {
+    display: block;
+  }
+
+  .navbar {
+    height: 70px;
+    padding: 0 15px;
   }
 }

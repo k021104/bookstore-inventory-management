@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
-import { Search, Plus, Moon, Sun, User, LogOut, Settings, ChevronDown } from "lucide-react";
+import { Search, Plus, Moon, Sun, User, LogOut, Settings, ChevronDown, Menu } from "lucide-react";
 import '../styles/Navbar.css';
 
-export default function Navbar({ onAddClick, searchQuery, setSearchQuery }) {
+export default function Navbar({ onAddClick, searchQuery, setSearchQuery, toggleMobileMenu }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
   const navigate = useNavigate();
@@ -36,6 +36,9 @@ export default function Navbar({ onAddClick, searchQuery, setSearchQuery }) {
   return (
     <nav className="navbar">
       <div className="nav-section-left">
+        <button className="hamburger-btn" onClick={toggleMobileMenu}>
+          <Menu size={24} />
+        </button>
         <h3 className="nav-logo-text">{pageTitle}</h3>
       </div>
 

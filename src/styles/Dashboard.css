@@ -115,7 +115,8 @@
 /* --- CHART FIXES --- */
 .chart-box {
   width: 100%;
-  height: 300px; /* Fixed height for Chart.js */
+  height: 300px;
+  /* Fixed height for Chart.js */
   min-height: 300px;
   padding: 10px;
   overflow: visible;
@@ -143,7 +144,8 @@ canvas {
   text-align: center;
   display: flex;
   flex-direction: column;
-  pointer-events: none; /* Allows hovering the chart behind text */
+  pointer-events: none;
+  /* Allows hovering the chart behind text */
 }
 
 .chart-label strong {
@@ -212,7 +214,8 @@ canvas {
 .table-overflow {
   overflow-x: auto;
   margin-top: 1rem;
-  -webkit-overflow-scrolling: touch; /* Smooth scroll for iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Smooth scroll for iOS */
 }
 
 .pro-table {
@@ -337,17 +340,20 @@ canvas {
   .dashboard-wrapper {
     padding: 1.5rem;
   }
+
   .main-header h2 {
     font-size: 1.75rem;
   }
 }
 
 @media (max-width: 900px) {
+
   .stat-row,
   .dashboard-grid-2 {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
+
   .stat-card {
     padding: 1.2rem;
   }
@@ -357,23 +363,30 @@ canvas {
   .dashboard-wrapper {
     padding: 1rem;
   }
+
   .main-header h2 {
     font-size: 1.5rem;
   }
+
   .content-panel {
     padding: 1rem;
     border-radius: 16px;
   }
+
   .activity-item-detailed {
     gap: 10px;
     padding: 10px;
   }
+
   .activity-time {
     display: none;
   }
+
   .restock-btn {
-    width: auto; /* Changed to auto so it doesn't look too wide on small mobile */
+    width: auto;
+    /* Changed to auto so it doesn't look too wide on small mobile */
   }
+
   .chart-box {
     height: 250px !important;
     min-height: 250px;
@@ -386,8 +399,63 @@ canvas {
     align-items: flex-start;
     text-align: left;
   }
+
   .stat-icon {
     width: 40px;
     height: 40px;
+  }
+}
+
+/* आपके मौजूदा डिज़ाइन को सुरक्षित रखते हुए केवल मोबाइल के लिए सुधार */
+
+@media (max-width: 1024px) {
+  .dashboard-wrapper {
+    padding: 1rem 1.5rem;
+    /* पैडिंग थोड़ी कम करें */
+  }
+}
+
+@media (max-width: 900px) {
+
+  /* स्टैट कार्ड्स को एक के नीचे एक करें */
+  .stat-row {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  /* ग्रिड को सिंगल कॉलम में बदलें */
+  .dashboard-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* चार्ट की चौड़ाई फिक्स करें ताकि वो बाहर न निकले */
+  .chart-box,
+  .chart-box-small {
+    max-width: 100%;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-header h2 {
+    font-size: 1.5rem;
+    /* मोबाइल पर हेडिंग छोटी करें */
+  }
+
+  /* टेबल को स्क्रॉल करने योग्य बनाएं ताकि लेआउट न फटे */
+  .table-overflow {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* कार्ड्स के अंदर के आइकॉन और टेक्स्ट को थोड़ा छोटा करें */
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .stat-val h3 {
+    font-size: 1.25rem;
   }
 }

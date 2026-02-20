@@ -1,12 +1,24 @@
+/* --- Desktop & Base Styles --- */
 .logs-wrapper {
-  padding: 2.5rem;
+  padding: 1rem 2.5rem;
+  /* टॉप पैडिंग थोड़ी बढ़ाई गई है */
   max-width: 900px;
   margin: 0 auto;
 }
 
-.logs-header { margin-bottom: 2rem; }
-.logs-header h1 { color: var(--text-main); font-size: 2rem; }
-.logs-header p { color: var(--text-muted); }
+.logs-header {
+  margin-bottom: 2rem;
+}
+
+.logs-header h1 {
+  color: var(--text-main);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.logs-header p {
+  color: var(--text-muted);
+}
 
 .logs-list {
   background: var(--nav-bg);
@@ -24,7 +36,14 @@
   transition: background 0.3s;
 }
 
-.log-card:hover { background: var(--input-fill); }
+.log-card:last-child {
+  border-bottom: none;
+  /* आखरी कार्ड का बॉर्डर हटाया */
+}
+
+.log-card:hover {
+  background: var(--input-fill);
+}
 
 .log-icon-wrapper {
   width: 42px;
@@ -36,27 +55,50 @@
   flex-shrink: 0;
 }
 
-.log-icon-wrapper.success { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
-.log-icon-wrapper.danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
-.log-icon-wrapper.warning { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.log-icon-wrapper.success {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.log-icon-wrapper.danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.log-icon-wrapper.warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
 
 .log-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  gap: 1rem;
+}
+
+.log-main {
+  flex: 1;
+  min-width: 0;
+  /* टेक्स्ट ओवरफ्लो को रोकने के लिए */
 }
 
 .log-action {
   display: block;
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--text-main);
   text-transform: uppercase;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
-.log-details { color: var(--text-muted); font-size: 0.95rem; margin: 0; }
+.log-details {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.4;
+}
 
 .log-meta {
   display: flex;
@@ -71,4 +113,56 @@
   padding: 5rem;
   text-align: center;
   color: var(--text-muted);
+}
+
+/* --- 100% RESPONSIVE UPDATES --- */
+
+/* 1. Medium to Small Screens (Toggles to Column Layout) */
+@media (max-width: 768px) {
+  .logs-wrapper {
+    padding: 1.5rem;
+  }
+
+  .log-card {
+    flex-direction: column;
+    /* आइकॉन को सबसे ऊपर लाने के लिए */
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .log-content {
+    flex-direction: column;
+    /* टेक्स्ट और टाइम को एक के नीचे एक करने के लिए */
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .log-meta {
+    margin-left: 0;
+    padding-top: 8px;
+    border-top: 1px solid var(--nav-border);
+    /* टाइम के ऊपर एक पतली लाइन */
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* 2. Extra Small Screens (Phones) */
+@media (max-width: 480px) {
+  .logs-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .log-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .log-action {
+    font-size: 0.75rem;
+  }
+
+  .log-details {
+    font-size: 0.85rem;
+  }
 }

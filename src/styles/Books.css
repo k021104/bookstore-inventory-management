@@ -77,8 +77,15 @@
   backdrop-filter: blur(10px);
 }
 
-.stock-pill[data-status='low'] { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-.stock-pill[data-status='ok'] { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.stock-pill[data-status='low'] {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.stock-pill[data-status='ok'] {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
 
 .card-content {
   padding: 1.5rem;
@@ -111,9 +118,22 @@
   border-radius: 12px;
 }
 
-.stat { display: flex; flex-direction: column; }
-.stat .label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; }
-.stat .value { font-size: 1rem; font-weight: 700; color: var(--text-main); }
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat .label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.stat .value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
 
 .card-actions {
   display: grid;
@@ -135,11 +155,27 @@
   border: 1px solid var(--nav-border);
 }
 
-.btn-edit { background: transparent; color: var(--text-main); }
-.btn-edit:hover { background: var(--primary); color: white; border-color: var(--primary); }
+.btn-edit {
+  background: transparent;
+  color: var(--text-main);
+}
 
-.btn-delete { background: transparent; color: #ef4444; }
-.btn-delete:hover { background: #ef4444; color: white; border-color: #ef4444; }
+.btn-edit:hover {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.btn-delete {
+  background: transparent;
+  color: #ef4444;
+}
+
+.btn-delete:hover {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
 
 /* Modal & Other styles remain similar to previous logic but adjusted for theme variables */
 /* --- MODAL OVERLAY --- */
@@ -149,8 +185,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Dimming the background */
-  backdrop-filter: blur(8px); /* Classy blur effect */
+  background: rgba(0, 0, 0, 0.4);
+  /* Dimming the background */
+  backdrop-filter: blur(8px);
+  /* Classy blur effect */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -169,8 +207,27 @@
   animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 .modal-header {
   display: flex;
@@ -179,7 +236,11 @@
   margin-bottom: 1.5rem;
 }
 
-.modal-header h3 { color: var(--text-main); font-size: 1.25rem; font-weight: 800; }
+.modal-header h3 {
+  color: var(--text-main);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
 
 .close-btn {
   background: var(--input-fill);
@@ -205,9 +266,23 @@
   align-items: center;
 }
 
-.book-preview-small img { width: 50px; height: 70px; object-fit: cover; border-radius: 6px; }
-.book-preview-small h4 { font-size: 0.9rem; color: var(--text-main); margin-bottom: 2px; }
-.book-preview-small span { font-size: 0.75rem; color: var(--text-muted); }
+.book-preview-small img {
+  width: 50px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.book-preview-small h4 {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.book-preview-small span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
 
 /* Form Elements */
 .form-grid {
@@ -217,8 +292,21 @@
   margin-bottom: 2rem;
 }
 
-.input-field { display: flex; flex-direction: column; gap: 8px; }
-.input-field label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: flex; align-items: center; gap: 5px;}
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-field label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
 .input-field input {
   background: var(--nav-bg);
@@ -230,10 +318,17 @@
   outline: none;
 }
 
-.input-field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+.input-field input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
 
 /* Buttons */
-.modal-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 
 .primary-btn {
   background: var(--primary);
@@ -256,6 +351,148 @@
   cursor: pointer;
 }
 
-.primary-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
-.secondary-btn:hover { background: var(--input-fill); color: var(--text-main); }
+.primary-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
 
+.secondary-btn:hover {
+  background: var(--input-fill);
+  color: var(--text-main);
+}
+
+@media (max-width: 1200px) {
+  .books-grid {
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .books-wrapper {
+    padding: 1.5rem;
+  }
+
+  .category-header {
+    overflow-x: auto;
+    /* कैटेगरीज़ ज़्यादा होने पर स्क्रॉल होंगी */
+    white-space: nowrap;
+    padding-bottom: 0.8rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* कैटेगरी बटन को टच फ्रेंडली बनाना */
+  .cat-tab {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+}
+
+/* 3. Mobile View (600px and below) */
+@media (max-width: 600px) {
+  .books-wrapper {
+    padding: 1rem;
+  }
+
+  .books-grid {
+    grid-template-columns: 1fr;
+    /* मोबाइल पर सिंगल कार्ड कॉलम */
+    gap: 1.2rem;
+  }
+
+  .main-header h2 {
+    font-size: 1.6rem;
+  }
+
+  /* कार्ड की इमेज हाइट कम करना ताकि मोबाइल पर कार्ड बहुत लंबा न दिखे */
+  .card-image {
+    height: 180px;
+  }
+
+  /* Modal (Edit Popup) Responsive */
+  .modal-box {
+    padding: 1.5rem;
+    width: 95%;
+    border-radius: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    /* इनपुट फील्ड्स को एक के नीचे एक करें */
+    gap: 12px;
+  }
+
+  .modal-actions {
+    gap: 8px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+}
+
+/* 4. Very Small Screens (400px) */
+@media (max-width: 400px) {
+  .card-actions {
+    grid-template-columns: 1fr;
+    /* एडिट और डिलीट बटन एक के नीचे एक */
+  }
+
+  .stats-row {
+    padding: 10px;
+  }
+
+  .stat .value {
+    font-size: 0.9rem;
+  }
+}
+
+/* Layout Protection: Ensure images don't stretch weirdly */
+.card-image img {
+  aspect-ratio: 16/9;
+}
+
+/* ActivityLogs.css - Mobile Fixes */
+
+@media (max-width: 1024px) {
+  .logs-wrapper {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 650px) {
+  .log-card {
+    padding: 1rem;
+    gap: 1rem;
+    /* आइकॉन और कंटेंट को ऊपर-नीचे करने के बजाय आइकॉन को छोटा रखें */
+  }
+
+  .log-icon-wrapper {
+    width: 35px;
+    height: 35px;
+  }
+
+  .log-content {
+    flex-direction: column;
+    /* मोबाइल पर टाइम को नीचे ले आएं */
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .log-meta {
+    align-self: flex-end;
+    /* टाइम को नीचे दाएं कोने में रखें */
+  }
+
+  .log-action {
+    font-size: 0.8rem;
+  }
+
+  .log-details {
+    font-size: 0.85rem;
+  }
+}

@@ -1,6 +1,5 @@
-/* --- CATEGORIES PAGE WRAPPER --- */
 .categories-container {
-    padding: 2.5rem;
+    padding: 1rem 2.5rem;
     max-width: 1400px;
     margin: 0 auto;
     animation: fadeIn 0.5s ease-in-out;
@@ -11,8 +10,6 @@
 }
 
 .page-header h1 {
-    font-size: 2rem;
-    font-weight: 800;
     color: var(--text-main);
     margin-bottom: 8px;
     letter-spacing: -0.5px;
@@ -188,5 +185,75 @@
 
     .categories-container {
         padding: 1.5rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .categories-container {
+        padding: 1.5rem 2rem;
+    }
+
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 1.5rem;
+    }
+
+    .page-header {
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 850px) {
+    .page-header h1 {
+        font-size: 1.75rem;
+    }
+
+    .category-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .categories-wrapper {
+        padding: 1rem;
+    }
+
+    .categories-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.2rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .page-header p {
+        font-size: 0.9rem;
+    }
+
+    .card-mid h3 {
+        font-size: 1.2rem;
+    }
+
+    .value-box strong {
+        font-size: 1.1rem;
+    }
+
+    .view-details-btn {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .card-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .view-details-btn {
+        width: 100%;
+        text-align: center;
     }
 }

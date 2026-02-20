@@ -11,9 +11,11 @@ export default function ActivityLogs() {
   }, []);
 
   const getIcon = (action) => {
-    if (action.includes("Added")) return <PlusCircle size={18} className='text-success' />;
-    if (action.includes("Deleted")) return <Trash2 size={18} className="text-danger" />;
-    return <Edit size={18} className="text-warning" />;
+    const act = action.toLowerCase();
+    if (act.includes("added")) return <PlusCircle size={18} className='text-success' />;
+    if (act.includes("deleted")) return <Trash2 size={18} className="text-danger" />;
+    if (act.includes("updated")) return <Edit size={18} className="text-warning" />;
+    return <AlertCircle size={18} />;
   };
 
   return (

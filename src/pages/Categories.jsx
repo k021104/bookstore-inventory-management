@@ -33,7 +33,7 @@ export default function Categories() {
   return (
     <div className='categories-container'>
       <header className='page-header'>
-        <h1>inventory Categories</h1>
+        <h1>Inventory Categories</h1>
         <p>Manage and monitor your stock distribution across genres.</p>
       </header>
 

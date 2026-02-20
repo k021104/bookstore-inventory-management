@@ -91,7 +91,7 @@ export default function Dashboard() {
   return (
     <div className='dashboard-wrapper'>
       <header className='main-header'>
-        <h2>Executive Dashboard</h2>
+        <h1>Executive Dashboard</h1>
         <p>Comprehensive overview of library assets and activity.</p>
       </header>
 

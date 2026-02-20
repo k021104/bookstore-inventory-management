@@ -67,13 +67,18 @@ const BooksPage = ({ searchQuery }) => {
     e.preventDefault();
     const oldBook = books.find(b => b.id === editingBook.id);
 
+    if (!oldBook) {
+      setEditingBook(null);
+      return;
+    }
+
     const updated = books.map(b => b.id === editingBook.id ? editingBook : b);
     setBooks(updated);
     localStorage.setItem(`inventory_${activeCategory}`, JSON.stringify(updated));
 
     saveLog(
       "Updated",
-      `Changed "${editingBook.title}" - Stock: ${oldBook.stock}→${editingBook.stock}, Price: $${oldBook.price}→$${editingBook.price}`,
+      `Changed "${editingBook.title}" - Stock: ${oldBook.stock}→${editingBook.stock}, Price: ${currency}${oldBook.price}→${currency}${editingBook.price}`,
       "warning"
     );
 
@@ -126,7 +131,7 @@ const BooksPage = ({ searchQuery }) => {
                   <button className="btn-edit" onClick={() => setEditingBook(book)}>
                     <Edit3 size={16} /> Edit
                   </button>
-                  <button className="btn-delete" onClick={() => deleteBook(book.id)}>
+                  <button className="btn-delete" onClick={() => deleteBook(book.id, book.title)}>
                     <Trash2 size={16} /> Delete
                   </button>
                 </div>
@@ -156,7 +161,7 @@ const BooksPage = ({ searchQuery }) => {
 
               <div className="form-grid">
                 <div className="input-field">
-                  <label><DollarSign size={14} /> Price</label>
+                  <label>Price ({currency})</label>
                   <input
                     type="number"
                     step="0.01"

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Books from "./pages/Books";
@@ -16,7 +16,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
 
@@ -38,7 +38,7 @@ function App() {
 
       </Routes>
       <AddBookModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

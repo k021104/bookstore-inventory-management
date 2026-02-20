@@ -6,7 +6,7 @@ import { saveLog } from '../utils/logger';
 import { CurrencyContext } from '../context/CurrencyContext';
 
 const BooksPage = ({ searchQuery }) => {
-  const { currency } = useContext(CurrencyContext);
+  const { symbol } = useContext(CurrencyContext);
   const threshold = parseInt(localStorage.getItem('low_stock_limit')) || 10;
   const location = useLocation();
 
@@ -78,7 +78,7 @@ const BooksPage = ({ searchQuery }) => {
 
     saveLog(
       "Updated",
-      `Changed "${editingBook.title}" - Stock: ${oldBook.stock}→${editingBook.stock}, Price: ${currency}${oldBook.price}→${currency}${editingBook.price}`,
+      `Changed "${editingBook.title}" - Stock: ${oldBook.stock}→${editingBook.stock}, Price: ${symbol}${oldBook.price}→${symbol}${editingBook.price}`,
       "warning"
     );
 
@@ -119,7 +119,7 @@ const BooksPage = ({ searchQuery }) => {
                 <div className="stats-row">
                   <div className="stat">
                     <span className="label">Price</span>
-                    <span className="value">{currency}{book.price}</span>
+                    <span className="value">{symbol}{book.price}</span>
                   </div>
                   <div className="stat">
                     <span className="label">Stock</span>
@@ -161,7 +161,7 @@ const BooksPage = ({ searchQuery }) => {
 
               <div className="form-grid">
                 <div className="input-field">
-                  <label>Price ({currency})</label>
+                  <label>Price ({symbol})</label>
                   <input
                     type="number"
                     step="0.01"

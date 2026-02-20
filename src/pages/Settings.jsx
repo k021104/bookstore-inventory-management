@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import {
   DollarSign,
   AlertTriangle,
-  Download,
   ShieldCheck,
   Palette,
   Save,
@@ -98,7 +97,7 @@ const Settings = () => {
     // 4. जादू: फॉर्म को अपने आप बंद कर देना (Toggle Off)
     setIsEditingPassword(false);
   };
-  
+
   return (
     <div className={`settings-page-final ${theme}`}>
       <div className="settings-container-box">
@@ -110,16 +109,16 @@ const Settings = () => {
         {/* --- Navigation Tabs --- */}
         <div className="settings-tabs-container">
           <button className={activeTab === 'general' ? 'active' : ''} onClick={() => setActiveTab('general')}>
-            <DollarSign size={18} /> General
+            <DollarSign size={20} /> <span>General</span>
           </button>
           <button className={activeTab === 'inventory' ? 'active' : ''} onClick={() => setActiveTab('inventory')}>
-            <AlertTriangle size={18} /> Inventory
+            <AlertTriangle size={20} /> <span>Inventory</span>
           </button>
           <button className={activeTab === 'account' ? 'active' : ''} onClick={() => setActiveTab('account')}>
-            <ShieldCheck size={18} /> Account
+            <ShieldCheck size={20} /> <span>Account</span>
           </button>
           <button className={activeTab === 'appearance' ? 'active' : ''} onClick={() => setActiveTab('appearance')}>
-            <Palette size={18} /> Appearance
+            <Palette size={20} /> <span>Appearance</span>
           </button>
         </div>
 
@@ -151,75 +150,87 @@ const Settings = () => {
           )}
 
           {/* 2. Inventory: Low Stock Threshold */}
+          {/* 2. Inventory: Low Stock Threshold */}
           {activeTab === 'inventory' && (
-            <div className="tab-pane">
+            <div className="tab-pane animate-slide-up">
+              <div className="tab-header">
+                <h3>Inventory Preferences</h3>
+                <p>Fine-tune how your stock alerts and management behave.</p>
+              </div>
+
               <div className="setting-row">
                 <div className="setting-info">
                   <h3>Low Stock Threshold</h3>
-                  <p>Alert me when book quantity falls below this number.</p>
+                  <p>Set the minimum quantity before the system triggers a "Low Stock" alert.</p>
                 </div>
-                <div className="st-input-wrapper">
+
+                {/* Wrapper में नई क्लास 'st-number-stepper' जोड़ी गई है */}
+                <div className="st-number-stepper">
                   <input
                     type="number"
                     value={threshold}
                     onChange={(e) => setThreshold(e.target.value)}
-                    className="st-number-input"
+                    className="st-inventory-input"
                   />
-                  <span>Units</span>
+                  <span className="unit-label">Units</span>
                 </div>
               </div>
             </div>
           )}
 
           {/* 3. Account & Security */}
+          {/* 3. Account & Security */}
           {activeTab === 'account' && (
-            <div className="tab-pane animate-fade">
-              {/* Admin Profile - ये हमेशा दिखेगा */}
-              <div className="st-form-group">
-                <label><User size={16} /> Admin Name</label>
-                <input type="text" className="st-input" defaultValue="Admin User" />
-              </div>
+            <div className="tab-pane animate-slide-up">
+              <div className="section-block">
+                <h3 className="section-title"><User size={18} /> Public Profile</h3>
+                <div className="account-grid">
+                  <div className="st-form-group">
+                    <label>Admin Name</label>
+                    <input type="text" className="st-input-premium" defaultValue="Admin User" />
+                  </div>
 
-              <div className="st-form-group">
-                <label><Mail size={16} /> Admin Email</label>
-                <input type="email" className="st-input" defaultValue="admin@bookstore.com" />
+                  <div className="st-form-group">
+                    <label>Admin Email</label>
+                    <input type="email" className="st-input-premium" defaultValue="admin@bookstore.com" />
+                  </div>
+                </div>
               </div>
 
               {/* Password Section */}
-              <div className="security-section border-top">
+              <div className="section-block border-top-glow">
                 {!isEditingPassword ? (
-                  // अगर बटन क्लिक नहीं हुआ है, तो सिर्फ ये दिखेगा
-                  <div className="password-placeholder">
+                  <div className="password-placeholder-card">
                     <div className="setting-info">
                       <h3>Password & Security</h3>
                       <p>Update your login credentials to keep your account safe.</p>
                     </div>
                     <button
-                      className="st-btn-outline"
+                      className="st-btn-glow"
                       onClick={() => setIsEditingPassword(true)}
                     >
                       <Lock size={16} /> Change Password
                     </button>
                   </div>
                 ) : (
-                  // अगर बटन क्लिक कर दिया, तो ये फॉर्म खुलेगा
                   <form onSubmit={handlePasswordChange} className="password-edit-form animate-slide-up">
+                    <h3 className="section-title">Update Password</h3>
                     <div className="st-form-group">
                       <label>Current Password</label>
                       <input
                         type="password"
-                        className="st-input"
+                        className="st-input-premium"
                         value={passwords.old}
                         onChange={(e) => setPasswords({ ...passwords, old: e.target.value })}
                         autoFocus
                       />
                     </div>
-                    <div className="form-row-grid">
+                    <div className="form-row-grid-premium">
                       <div className="st-form-group">
                         <label>New Password</label>
                         <input
                           type="password"
-                          className="st-input"
+                          className="st-input-premium"
                           value={passwords.new}
                           onChange={(e) => setPasswords({ ...passwords, new: e.target.value })}
                         />
@@ -228,7 +239,7 @@ const Settings = () => {
                         <label>Confirm Password</label>
                         <input
                           type="password"
-                          className="st-input"
+                          className="st-input-premium"
                           value={passwords.confirm}
                           onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
                         />
@@ -237,13 +248,13 @@ const Settings = () => {
                     <div className="form-actions-row">
                       <button
                         type="button"
-                        className="btn-cancel-text"
+                        className="btn-cancel-minimal"
                         onClick={() => setIsEditingPassword(false)}
                       >
                         Cancel
                       </button>
-                      <button type="submit" className="st-save-btn small">
-                        Save New Password
+                      <button type="submit" className="st-save-btn-small">
+                        Update Password
                       </button>
                     </div>
                   </form>
@@ -254,22 +265,45 @@ const Settings = () => {
 
           {/* 4. Theme & Appearance */}
           {activeTab === 'appearance' && (
-            <div className="tab-pane">
-              <div className="setting-row">
+            <div className="tab-pane animate-slide-up">
+              <div className="tab-header">
+                <h3>Appearance Settings</h3>
+                <p>Customize how the platform looks on your device.</p>
+              </div>
+
+              <div className="appearance-card">
                 <div className="setting-info">
-                  <h3>Theme Mode</h3>
-                  <p>Switch between light and dark visual styles.</p>
+                  <h3>Interface Theme</h3>
+                  <p>Switch between Light and Dark mode for a comfortable viewing experience.</p>
                 </div>
-                <button className={`theme-toggle-btn ${theme}`} onClick={toggleTheme}>
-                  <div className="toggle-dot"></div>
-                  <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
-                </button>
+
+                <div className="theme-switch-wrapper">
+                  <button
+                    className={`premium-theme-toggle ${theme}`}
+                    onClick={toggleTheme}
+                    aria-label="Toggle Theme"
+                  >
+                    <div className="switch-track">
+                      <div className="switch-thumb">
+                        {theme === 'dark' ? <Lock size={14} /> : <Palette size={14} />}
+                      </div>
+                    </div>
+                    <span className="theme-status-text">
+                      {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+                    </span>
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
-          <div className="st-footer">
-            <button className="st-save-btn"><Save size={18} /> Save All Changes</button>
+          <div className="st-footer-premium">
+            <div className="footer-content">
+              <p>Changes are auto-saved to local storage</p>
+              <button className="st-save-btn-glow" onClick={() => alert("All settings synchronized!")}>
+                <Save size={18} /> Save All Changes
+              </button>
+            </div>
           </div>
         </div>
       </div>

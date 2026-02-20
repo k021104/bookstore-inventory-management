@@ -1,229 +1,662 @@
+/* Settings.css - Premium Re-design */
+
 .settings-page-final {
-    padding: 1rem 2.5rem;
+    padding: 1rem 2rem;
     min-height: 100vh;
+    background: var(--bg-main);
+    /* Ensure consistency with your theme */
 }
 
 .settings-container-box {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
 }
 
-.settings-header-section h1 {
-    font-size: 2.2rem;
-    color: var(--text-main);
-    margin-bottom: 4px;
+/* Header Re-style */
+.settings-header-section {
+    margin-bottom: 2.5rem;
+    text-align: left;
 }
 
 .settings-header-section p {
     color: var(--text-muted);
-    margin-bottom: 30px;
+    font-size: 1rem;
+    opacity: 0.8;
 }
 
-/* Tabs */
+/* Premium Tabs */
 .settings-tabs-container {
-    display: flex;
-    gap: 10px;
-    border-bottom: 1px solid var(--nav-border);
-    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* Equal width tabs */
+    gap: 12px;
+    background: var(--input-fill);
+    padding: 8px;
+    border-radius: 16px;
+    margin-bottom: 2rem;
 }
 
 .settings-tabs-container button {
     background: transparent;
     border: none;
-    padding: 12px 24px;
+    padding: 12px;
     color: var(--text-muted);
-    cursor: pointer;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
     display: flex;
+    flex-direction: column;
+    /* Icon above text for modern look */
     align-items: center;
-    gap: 10px;
-    font-weight: 500;
-    transition: 0.3s;
-    border-bottom: 2px solid transparent;
+    gap: 6px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .settings-tabs-container button.active {
+    background: var(--nav-bg);
     color: var(--primary);
-    border-bottom-color: var(--primary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
 }
 
-/* Card Body */
+/* Premium Card Body */
 .settings-body-card {
     background: var(--nav-bg);
     border: 1px solid var(--nav-border);
-    border-radius: 24px;
-    padding: 30px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    border-radius: 28px;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
 }
 
+/* Row Styling */
 .setting-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
-}
-
-.border-top {
-    border-top: 1px solid var(--nav-border);
-    margin-top: 10px;
-    padding-top: 30px;
+    padding: 1.5rem 0;
 }
 
 .setting-info h3 {
     color: var(--text-main);
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 4px;
 }
 
 .setting-info p {
     color: var(--text-muted);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    max-width: 400px;
 }
 
-/* Form Elements */
+/* Modern Inputs */
 .st-select,
 .st-input,
 .st-number-input {
+    min-width: 180px;
+    height: 48px;
     background: var(--input-fill);
-    border: 1px solid var(--nav-border);
-    color: var(--text-main);
-    padding: 10px 15px;
-    border-radius: 12px;
-    outline: none;
-}
-
-.st-form-group {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.st-form-group label {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.st-btn-outline {
-    background: transparent;
-    border: 1px solid var(--nav-border);
-    color: var(--text-main);
-    padding: 10px 20px;
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-/* Theme Toggle Button */
-.theme-toggle-btn {
-    width: 100px;
-    height: 39px;
-    border-radius: 20px;
-    border: none;
-    background: #e2e8f0;
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-}
-
-.theme-toggle-btn.dark {
-    background: var(--primary);
-    justify-content: flex-start;
-}
-
-.theme-toggle-btn.light {
-    justify-content: flex-end;
-}
-
-.toggle-dot {
-    width: 32px;
-    height: 32px;
-    background: white;
-    border-radius: 50%;
-    position: absolute;
-    left: 4px;
+    border: 2px solid transparent;
+    font-weight: 500;
     transition: 0.3s;
 }
 
-.theme-toggle-btn.dark .toggle-dot {
-    left: 64px;
+.st-select:focus,
+.st-input:focus {
+    border-color: var(--primary);
+    background: var(--nav-bg);
 }
 
-/* Footer Save */
-.st-footer {
-    margin-top: 40px;
-    border-top: 1px solid var(--nav-border);
-    padding-top: 25px;
+/* Responsive Logic */
+
+/* Tablets (iPad/Folders) */
+@media (max-width: 768px) {
+    .settings-page-final {
+        padding: 1.5rem 1rem;
+    }
+
+    .settings-tabs-container {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2x2 Grid on mobile */
+    }
+
+    .settings-body-card {
+        padding: 1.5rem;
+    }
+
+    .setting-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .st-select,
+    .st-input,
+    .st-number-input {
+        width: 100%;
+        /* Full width inputs */
+    }
+
+    .password-placeholder {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+
+/* Small Phones (iPhone SE/Mobile) */
+@media (max-width: 480px) {
+    .settings-header-section h1 {
+        font-size: 1.8rem;
+    }
+
+    .settings-tabs-container {
+        grid-template-columns: 1fr;
+        /* Stack tabs on very small screens or use overflow */
+        gap: 8px;
+    }
+
+    .settings-tabs-container button {
+        flex-direction: row;
+        /* Horizontal tabs on small mobile */
+        justify-content: flex-start;
+        padding-left: 20px;
+    }
+
+    .st-footer {
+        flex-direction: column;
+    }
+
+    .st-save-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* --- General Tab Container Styles --- */
+
+/* --- General Tab Container Styles --- */
+
+/* 1. Individual Row Styling */
+.tab-pane .setting-row {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--nav-border);
+    transition: all 0.2s ease;
 }
 
-.st-save-btn {
+.tab-pane .setting-row:last-child {
+    border-bottom: none;
+}
+
+/* 2. Text Content Styling */
+.setting-info {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.setting-info h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+}
+
+.setting-info p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 480px;
+}
+
+/* 3. Dropdown (Select) Modern Look */
+.st-select {
+    appearance: none;
+    /* Default arrow hide */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-color: var(--input-fill);
+    border: 1.5px solid var(--nav-border);
+    color: var(--text-main);
+    padding: 10px 40px 10px 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    min-width: 220px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.st-select:hover {
+    border-color: var(--primary);
+    background-color: var(--nav-bg);
+}
+
+/* 4. Modern Outline Button (Export Button) */
+.st-btn-outline {
+    background: var(--input-fill);
+    border: 1.5px solid var(--nav-border);
+    color: var(--text-main);
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.st-btn-outline:hover {
     background: var(--primary);
     color: white;
-    border: none;
-    padding: 14px 30px;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
+}
+
+.st-btn-outline svg {
+    transition: transform 0.3s ease;
+}
+
+.st-btn-outline:hover svg {
+    transform: translateY(2px);
+}
+
+/* --- 100% Responsive Logic --- */
+
+@media (max-width: 768px) {
+    .tab-pane .setting-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 1.5rem 0;
+    }
+
+    .setting-info {
+        padding-right: 0;
+    }
+
+    .st-select,
+    .st-btn-outline {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* --- Inventory Tab Specific Styles --- */
+
+.tab-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--nav-border);
+}
+
+.tab-header h3 {
+    margin-bottom: 4px !important;
+}
+
+.tab-header p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* Custom Number Stepper UI */
+.st-number-stepper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: var(--input-fill);
+    border: 1.5px solid var(--nav-border);
     border-radius: 14px;
+    padding: 4px 12px;
+    transition: all 0.3s ease;
+    min-width: 180px;
+}
+
+.st-number-stepper:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
+    background: var(--nav-bg);
+}
+
+.st-inventory-input {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 1.1rem;
+    font-weight: 700;
+    width: 80px;
+    padding: 8px 0;
+    outline: none;
+    text-align: center;
+}
+
+/* Chrome, Safari, Edge, Opera में तीर हटाने के लिए */
+.st-inventory-input::-webkit-outer-spin-button,
+.st-inventory-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.unit-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-left: 1px solid var(--nav-border);
+    padding-left: 12px;
+    margin-left: 8px;
+}
+
+/* --- 100% Responsive Logic --- */
+
+@media (max-width: 768px) {
+    .st-number-stepper {
+        width: 100%;
+        justify-content: space-between;
+        padding: 8px 20px;
+    }
+
+    .st-inventory-input {
+        text-align: left;
+        flex: 1;
+    }
+}
+
+
+/* --- Account Tab Specific Styles --- */
+
+.section-block {
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem !important;
+    font-weight: 700;
+    margin-bottom: 1.5rem !important;
+    color: var(--primary);
+}
+
+/* Profile Grid */
+.account-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+/* Premium Inputs */
+.st-input-premium {
+    margin-top: 5px;
+    background: var(--input-fill);
+    border: 1.5px solid var(--nav-border);
+    color: var(--text-main);
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.st-input-premium:focus {
+    border-color: var(--primary);
+    background: var(--nav-bg);
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
+    outline: none;
+}
+
+/* Password Placeholder Card */
+.password-placeholder-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--input-fill);
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px dashed var(--nav-border);
+}
+
+.st-btn-glow {
+    background: var(--nav-bg);
+    border: 1px solid var(--nav-border);
+    color: var(--text-main);
+    padding: 10px 20px;
+    border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    transition: 0.3s;
 }
 
-.animate-slide-up {
-    animation: slideUp 0.4s ease-out;
+.st-btn-glow:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Password Form Grid */
+.form-row-grid-premium {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1rem;
 }
 
-.password-placeholder {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
+.border-top-glow {
+    border-top: 1px solid var(--nav-border);
+    padding-top: 2rem;
 }
 
-.password-edit-form {
-    padding-top: 10px;
-}
-
-.form-actions-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.btn-cancel-text {
+.btn-cancel-minimal {
     background: transparent;
     border: none;
     color: var(--text-muted);
+    font-weight: 600;
     cursor: pointer;
-    font-weight: 500;
-}
-
-.btn-cancel-text:hover {
-    color: var(--text-main);
-    text-decoration: underline;
-}
-
-.st-save-btn.small {
     padding: 10px 20px;
+}
+
+.st-save-btn-small {
+    margin-top: 30px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* --- 100% Responsive Logic --- */
+
+@media (max-width: 768px) {
+
+    .account-grid,
+    .form-row-grid-premium {
+        grid-template-columns: 1fr;
+        /* Stack inputs on mobile */
+    }
+
+    .password-placeholder-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .st-btn-glow {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* --- Appearance Tab Specific Styles --- */
+
+.appearance-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--input-fill);
+    padding: 2rem;
+    border-radius: 20px;
+    border: 1px solid var(--nav-border);
+    margin-top: 1rem;
+}
+
+/* Premium Theme Toggle Button */
+.premium-theme-toggle {
+    background: var(--nav-bg);
+    border: 1.5px solid var(--nav-border);
+    padding: 10px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.switch-track {
+    width: 50px;
+    height: 26px;
+    background: #cbd5e1;
+    /* Default Gray */
+    border-radius: 20px;
+    position: relative;
+    transition: 0.3s;
+}
+
+.premium-theme-toggle.dark .switch-track {
+    background: var(--primary);
+}
+
+.switch-thumb {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.premium-theme-toggle.dark .switch-thumb {
+    left: 27px;
+    color: var(--primary);
+}
+
+.theme-status-text {
+    font-weight: 700;
     font-size: 0.9rem;
+    color: var(--text-main);
+    min-width: 85px;
+    text-align: left;
+}
+
+/* Hover Effect */
+.premium-theme-toggle:hover {
+    border-color: var(--primary);
+    transform: scale(1.02);
+}
+
+/* --- 100% Responsive Logic --- */
+
+@media (max-width: 768px) {
+    .appearance-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+        padding: 1.5rem;
+    }
+
+    .theme-switch-wrapper {
+        width: 100%;
+    }
+
+    .premium-theme-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* --- Premium Footer Design --- */
+.st-footer-premium {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--nav-border);
+    position: sticky;
+    bottom: 0;
+    background: var(--nav-bg);
+    /* Glassmorphism के लिए यहाँ opacity कम कर सकते हैं */
+    padding-bottom: 1rem;
+    z-index: 10;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-content p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* Glowing Save Button */
+.st-save-btn-glow {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.2);
+}
+
+.st-save-btn-glow:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(var(--primary-rgb), 0.4);
+    filter: brightness(1.1);
+}
+
+.st-save-btn-glow:active {
+    transform: translateY(0);
+}
+
+/* 100% Responsive Footer */
+@media (max-width: 600px) {
+    .footer-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .st-save-btn-glow {
+        width: 100%;
+        justify-content: center;
+    }
 }

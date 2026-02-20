@@ -81,19 +81,15 @@ const Settings = () => {
   const handlePasswordChange = (e) => {
     e.preventDefault();
 
-    // 1. चेक करें कि पासवर्ड मैच हो रहे हैं या नहीं
     if (passwords.new !== passwords.confirm) {
       alert("Naya password match nahi ho raha!");
       return;
     }
 
-    // 2. यहाँ आपका 'Success' मैसेज आएगा
     alert("Security details updated successfully!");
 
-    // 3. फॉर्म के इनपुट खाली करें
     setPasswords({ old: '', new: '', confirm: '' });
 
-    // 4. जादू: फॉर्म को अपने आप बंद कर देना (Toggle Off)
     setIsEditingPassword(false);
   };
 

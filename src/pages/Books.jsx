@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Trash2, Edit3, X, Loader2, Package, DollarSign } from 'lucide-react';
+import { Trash2, Edit3, X, Loader2, Package } from 'lucide-react';
 import '../styles/Books.css';
 import { useLocation } from 'react-router-dom';
 import { saveLog } from '../utils/logger';

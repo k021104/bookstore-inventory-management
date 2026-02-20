@@ -6,7 +6,6 @@ import {
   Palette,
   Save,
   User,
-  Mail,
   Lock,
   FileOutput
 } from 'lucide-react';

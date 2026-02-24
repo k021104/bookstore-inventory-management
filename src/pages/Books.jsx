@@ -6,7 +6,7 @@ import { saveLog } from '../utils/logger';
 import { CurrencyContext } from '../context/CurrencyContext';
 
 const BooksPage = ({ searchQuery }) => {
-  const { symbol } = useContext(CurrencyContext);
+  const { symbol, currency, rates } = useContext(CurrencyContext);
   const threshold = parseInt(localStorage.getItem('low_stock_limit')) || 10;
   const location = useLocation();
 
@@ -19,6 +19,11 @@ const BooksPage = ({ searchQuery }) => {
     book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     book.author.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const convertPrice = (price) => {
+    const basePrice = parseFloat(price);
+    return (basePrice * rates[currency]).toFixed(2);
+  };
 
   useEffect(() => {
     if (location.state?.selectedCategory) {
@@ -43,7 +48,7 @@ const BooksPage = ({ searchQuery }) => {
             author: b.authors?.[0]?.name || "Unknown Author",
             coverId: b.cover_id,
             stock: Math.floor(Math.random() * 50) + 1,
-            price: (Math.random() * 30 + 10).toFixed(2),
+            price: Math.random() * 30 + 10,
           }));
           setBooks(formatted);
           localStorage.setItem(`inventory_${activeCategory}`, JSON.stringify(formatted));
@@ -119,7 +124,7 @@ const BooksPage = ({ searchQuery }) => {
                 <div className="stats-row">
                   <div className="stat">
                     <span className="label">Price</span>
-                    <span className="value">{symbol}{book.price}</span>
+                    <span className="value">{symbol}{convertPrice(book.price)}</span>
                   </div>
                   <div className="stat">
                     <span className="label">Stock</span>

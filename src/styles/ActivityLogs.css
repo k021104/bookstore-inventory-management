@@ -1,7 +1,6 @@
 /* --- Desktop & Base Styles --- */
 .logs-wrapper {
-  padding: 1rem 2.5rem;
-  /* टॉप पैडिंग थोड़ी बढ़ाई गई है */
+  padding: 1rem 2rem;
   max-width: 900px;
   margin: 0 auto;
 }

@@ -69,7 +69,7 @@ export default function Dashboard() {
   };
 
   const getStockDistribution = () => {
-    const low = books.filter(b => b.edition_count < 750).length;
+    const low = books.filter(b => b.edition_count < 10).length;
     const healthy = books.length - low;
 
     return {

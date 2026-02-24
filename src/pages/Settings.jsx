@@ -26,6 +26,17 @@ const Settings = () => {
 
   const [isEditingPassword, setIsEditingPassword] = useState(false);
 
+  const [adminData, setAdminData] = useState({
+    name: "",
+    email: ""
+  });
+
+  const [profileError, setProfileError] = useState("");
+  const [profileSuccess, setProfileSuccess] = useState("");
+
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
+
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -56,6 +67,17 @@ const Settings = () => {
     localStorage.setItem('low_stock_limit', threshold);
   }, [threshold]);
 
+  useEffect(() => {
+    const storedAdmin = JSON.parse(localStorage.getItem("admin_data"));
+
+    if (storedAdmin) {
+      setAdminData({
+        name: storedAdmin.username,
+        email: storedAdmin.email
+      });
+    }
+  }, []);
+
   const handleExport = () => {
     if (booksData.length === 0) {
       alert("Abhi data load ho raha hai, thodi der rukein!");
@@ -78,19 +100,93 @@ const Settings = () => {
     a.click();
   };
 
-  const handlePasswordChange = (e) => {
-    e.preventDefault();
+  const handleProfileUpdate = () => {
+    let storedAdmin = JSON.parse(localStorage.getItem("admin_data"));
 
-    if (passwords.new !== passwords.confirm) {
-      alert("Naya password match nahi ho raha!");
+    if (!storedAdmin) {
+      storedAdmin = {
+        username: "Admin",
+        email: "admin@bookstore.com",
+        password: "Admin123"
+      };
+    }
+
+    // Reset messages
+    setProfileError("");
+    setProfileSuccess("");
+
+    // Name validation
+    if (!adminData.name.trim()) {
+      setProfileError("Admin name cannot be empty!");
       return;
     }
 
-    alert("Security details updated successfully!");
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(adminData.email)) {
+      setProfileError("Please enter a valid email address!");
+      return;
+    }
+
+    const updatedAdmin = {
+      ...storedAdmin,
+      username: adminData.name,
+      email: adminData.email
+    };
+
+    localStorage.setItem("admin_data", JSON.stringify(updatedAdmin));
+
+    setProfileSuccess("Profile updated successfully!");
+  };
+
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+
+    const storedAdmin = JSON.parse(localStorage.getItem("admin_data"));
+
+    setPasswordError("");
+    setPasswordSuccess("");
+
+    if (!storedAdmin) {
+      setPasswordError("Admin data not found!");
+      return;
+    }
+
+    if (passwords.old !== storedAdmin.password) {
+      setPasswordError("Current password is incorrect!");
+      return;
+    }
+
+    if (passwords.new.length < 6) {
+      setPasswordError("Password must be at least 6 characters long!");
+      return;
+    }
+
+    if (!/[A-Z]/.test(passwords.new)) {
+      setPasswordError("Password must contain at least one uppercase letter!");
+      return;
+    }
+
+    if (!/[0-9]/.test(passwords.new)) {
+      setPasswordError("Password must contain at least one number!");
+      return;
+    }
+
+    if (passwords.new !== passwords.confirm) {
+      setPasswordError("New password and confirm password do not match!");
+      return;
+    }
+
+    const updatedAdmin = {
+      ...storedAdmin,
+      password: passwords.new
+    };
+
+    localStorage.setItem("admin_data", JSON.stringify(updatedAdmin));
+
+    setPasswordSuccess("Password updated successfully!");
 
     setPasswords({ old: '', new: '', confirm: '' });
-
-    setIsEditingPassword(false);
   };
 
   return (
@@ -159,7 +255,6 @@ const Settings = () => {
                   <p>Set the minimum quantity before the system triggers a "Low Stock" alert.</p>
                 </div>
 
-                {/* Wrapper में नई क्लास 'st-number-stepper' जोड़ी गई है */}
                 <div className="st-number-stepper">
                   <input
                     type="number"
@@ -182,14 +277,16 @@ const Settings = () => {
                 <div className="account-grid">
                   <div className="st-form-group">
                     <label>Admin Name</label>
-                    <input type="text" className="st-input-premium" defaultValue="Admin User" />
+                    <input type="text" className="st-input-premium" value={adminData.name} onChange={(e) => setAdminData({ ...adminData, name: e.target.value })} />
                   </div>
 
                   <div className="st-form-group">
                     <label>Admin Email</label>
-                    <input type="email" className="st-input-premium" defaultValue="admin@bookstore.com" />
+                    <input type="email" className="st-input-premium" value={adminData.email} onChange={(e) => setAdminData({ ...adminData, email: e.target.value })} />
                   </div>
                 </div>
+                {profileError && <span className="error-text">{profileError}</span>}
+                {profileSuccess && <span className="success-text">{profileSuccess}</span>}
               </div>
 
               {/* Password Section */}
@@ -208,7 +305,7 @@ const Settings = () => {
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handlePasswordChange} className="password-edit-form animate-slide-up">
+                  <form className="password-edit-form animate-slide-up" onSubmit={handlePasswordChange}>
                     <h3 className="section-title">Update Password</h3>
                     <div className="st-form-group">
                       <label>Current Password</label>
@@ -248,12 +345,21 @@ const Settings = () => {
                       >
                         Cancel
                       </button>
-                      <button type="submit" className="st-save-btn-small">
+                      <button type="submit" className="st-save-btn-small" onClick={handlePasswordChange}>
                         Update Password
                       </button>
                     </div>
+                    {passwordError && <span className="error-text">{passwordError}</span>}
+                    {passwordSuccess && <span className="success-text">{passwordSuccess}</span>}
                   </form>
                 )}
+                <div className="st-footer-premium">
+                  <div className="footer-content">
+                    <button className="st-save-btn-glow" onClick={handleProfileUpdate}>
+                      <Save size={18} /> Save Profile
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -292,14 +398,6 @@ const Settings = () => {
             </div>
           )}
 
-          <div className="st-footer-premium">
-            <div className="footer-content">
-              <p>Changes are auto-saved to local storage</p>
-              <button className="st-save-btn-glow" onClick={() => alert("All settings synchronized!")}>
-                <Save size={18} /> Save All Changes
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

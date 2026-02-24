@@ -660,3 +660,17 @@
         justify-content: center;
     }
 }
+
+.error-text {
+  color: #ff4d4f;
+  font-size: 13px;
+  margin-top: 6px;
+  display: block;
+}
+
+.success-text {
+  color: #4CAF50;
+  font-size: 13px;
+  margin-top: 6px;
+  display: block;
+}

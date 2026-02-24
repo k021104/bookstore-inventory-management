@@ -6,7 +6,7 @@ import '../styles/Navbar.css';
 
 export default function Navbar({ onAddClick, searchQuery, setSearchQuery, toggleMobileMenu }) {
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -64,7 +64,6 @@ export default function Navbar({ onAddClick, searchQuery, setSearchQuery, toggle
           {theme === "light" ? <Moon size={18} /> : <Sun size={18} />}
         </button>
 
-        {/* --- PROFESSIONAL DROPDOWN START --- */}
         <div className="profile-wrapper">
           <div
             className={`premium-user-pill ${isDropdownOpen ? 'active' : ''}`}
@@ -100,7 +99,6 @@ export default function Navbar({ onAddClick, searchQuery, setSearchQuery, toggle
             </div>
           )}
         </div>
-        {/* --- PROFESSIONAL DROPDOWN END --- */}
       </div>
     </nav>
   );

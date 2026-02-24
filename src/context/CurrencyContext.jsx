@@ -11,6 +11,12 @@ export const CurrencyProvider = ({ children }) => {
     EUR: '€'
   };
 
+  const rates = {
+    INR: 1,
+    USD: 0.012,
+    EUR: 0.011
+  };
+
   useEffect(() => {
     localStorage.setItem('app_currency', currency);
   }, [currency]);
@@ -18,7 +24,7 @@ export const CurrencyProvider = ({ children }) => {
   const symbol = symbols[currency] || '₹';
 
   return (
-    <CurrencyContext.Provider value={{ currency, setCurrency, symbol }}>
+    <CurrencyContext.Provider value={{ currency, setCurrency, symbol, rates }}>
       {children}
     </CurrencyContext.Provider>
   );

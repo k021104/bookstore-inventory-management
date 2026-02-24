@@ -10,11 +10,28 @@ export default function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
 
-        if (email === "admin@bookstore.com" && password === "admin123") {
+        let adminData = JSON.parse(localStorage.getItem("admin_data"));
+
+        if (!adminData) {
+            adminData = {
+                username: "Admin",
+                email: "admin@bookstore.com",
+                password: "Admin123"
+            };
+
+            localStorage.setItem("admin_data", JSON.stringify(adminData));
+        }
+
+        console.log("Stored Admin:", adminData);
+
+        if (
+            email.trim() === adminData.email &&
+            password === adminData.password
+        ) {
             localStorage.setItem("isLoggedIn", "true");
             window.location.href = "/";
         } else {
-            alert("Invalid Credentials! Try: admin@bookstore.com / admin123");
+            alert("Invalid Credentials!");
         }
     };
 

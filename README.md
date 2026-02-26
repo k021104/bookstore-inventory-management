@@ -1,70 +1,119 @@
-# Getting Started with Create React App
+# 📚 Bookstore Inventory Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🚀 Overview  
 
-## Available Scripts
+A modern and feature-rich **Bookstore Inventory Management System** built using React.js.  
+The application fetches book data from the Open Library API and provides secure authentication, powerful inventory control features, search functionality, currency conversion, theme switching, and CSV export capability.
 
-In the project directory, you can run:
+This project focuses on real-world inventory workflows, state management, authentication logic, and responsive dashboard design.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## ✨ Key Features  
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 🔐 Authentication
+- Admin Login & Logout functionality  
+- Session management using LocalStorage  
 
-### `npm test`
+### 📊 Dashboard
+- Overview of total books  
+- Category-wise inventory tracking  
+- Stock summary & analytics  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 📚 Inventory Management
+- Add new books  
+- Update existing book details  
+- Delete books  
+- Category-wise book organization  
+- Set and monitor low stock units  
 
-### `npm run build`
+### 🔎 Search Functionality
+- Search books instantly by title or category  
+- Real-time filtering of inventory data  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 🌐 API Integration
+- Book data fetched from Open Library API  
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 💱 Currency Switcher
+- Dynamic currency conversion for book prices  
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 🌙 Theme Module
+- Light / Dark mode toggle  
+- Global theme management using Context API  
 
-### `npm run eject`
+### 👤 Admin Profile
+- Update admin profile details  
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 📦 Data Export
+- Export all book inventory data as CSV / Excel file  
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 📱 Responsive Design
+- Fully responsive dashboard layout  
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🛠 Tech Stack  
 
-## Learn More
+- React.js  
+- JavaScript (ES6+)  
+- CSS  
+- React Context API  
+- Open Library API  
+- LocalStorage  
+- CSV Export Logic  
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 🌐 API Used  
 
-### Code Splitting
+Book data is fetched from:  
+https://openlibrary.org/
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## 📦 Installation & Setup  
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1️⃣ Clone the repository  
 
-### Making a Progressive Web App
+```bash
+git clone https://github.com/k021104/bookstore-inventory-management
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+2️⃣ Install dependencies  
 
-### Advanced Configuration
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+3️⃣ Run the project  
 
-### Deployment
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Open in browser:  
+http://localhost:3000  
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🎯 Learning Outcomes  
+
+Through this project, I strengthened my understanding of:
+
+- API integration in React  
+- Authentication & session handling  
+- Complex state management  
+- Inventory control logic  
+- Search & filtering implementation  
+- Data export handling  
+- Context API usage  
+- Responsive dashboard design  
+- UI/UX best practices  
+
+---
+
+## 🌐 Live Demo  
+
+https://bookstore-inventory-management.vercel.app/
+
+---
